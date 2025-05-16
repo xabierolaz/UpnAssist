@@ -1,0 +1,92 @@
+<!-- index.html — UpnAssist-XabierOlaz -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>P2P Chat – PeerJS</title>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <style>
+    body{font-family:system-ui, sans-serif; margin:0; display:flex; height:100vh}
+    #peers{width:30%; border-right:1px solid #ccc; overflow:auto}
+    #chat{flex:1; display:flex; flex-direction:column}
+    #msgs{flex:1; overflow:auto; padding:1rem}
+    .msg{margin:.5rem 0; padding:.5rem 1rem; border-radius:16px; max-width:70%}
+    .in{background:#eee; align-self:flex-start}
+    .out{background:#cde; align-self:flex-end}
+    #inputRow{display:flex; padding:.5rem; border-top:1px solid #ccc}
+    #inputRow input{flex:1; padding:.5rem; font-size:1rem}
+  </style>
+</head>
+<body>
+  <div id="peers"></div>
+  <div id="chat">
+    <div id="msgs"></div>
+    <div id="inputRow" style="display:none;">
+      <input id="text" placeholder="Escribe…" />
+      <button id="send">➤</button>
+    </div>
+  </div>
+<script>
+// 1) Crear peer con un ID aleatorio (4 bytes hex)
+const myId = ([...crypto.getRandomValues(new Uint8Array(4))].map(b=>b.toString(16).padStart(2,'0')).join(''));
+const peer = new Peer(myId, {host: '0.peerjs.com', port: 443, secure: true});
+const peersDiv = document.getElementById('peers');
+const msgsDiv  = document.getElementById('msgs');
+const inputRow = document.getElementById('inputRow');
+let conn;
+
+function append(text, inbound){
+  const d = document.createElement('div');
+  d.textContent = text;
+  d.className = 'msg ' + (inbound? 'in':'out');
+  msgsDiv.appendChild(d);
+  msgsDiv.scrollTop = msgsDiv.scrollHeight;
+}
+
+// 2) Obtener lista de peers del mismo servidor y pintarlos
+async function refreshPeers(){
+  const res = await fetch('https://0.peerjs.com/peers');
+  const list = (await res.json()).filter(id=>id!==myId);
+  peersDiv.innerHTML='';
+  list.forEach(id=>{
+    const b=document.createElement('button');
+    b.textContent=id;
+    b.style= 'display:block;width:100%;padding:.5rem;border:none;background:#f8f8f8;border-bottom:1px solid #ddd';
+    b.onclick=()=>connectTo(id);
+    peersDiv.appendChild(b);
+  });
+}
+setInterval(refreshPeers,3000);
+
+// 3) Conexión saliente
+function connectTo(id){
+  if(conn) conn.close();
+  conn = peer.connect(id);
+  bindConn();
+}
+// 4) Conexión entrante
+peer.on('connection', c=>{ if(conn) c.close(); else {conn=c; bindConn(); }});
+
+function bindConn(){
+  conn.on('open', ()=>{
+    inputRow.style.display='flex';
+    append('🔗 Conectado con '+conn.peer,true);
+  });
+  conn.on('data', d=>append(d,true));
+  conn.on('close', ()=>{
+    append('❌ Desconectado', true);
+    inputRow.style.display='none';
+  });
+}
+
+document.getElementById('send').onclick=()=>{
+  const t=document.getElementById('text');
+  if(!t.value.trim()) return;
+  conn.send(t.value);
+  append(t.value,false);
+  t.value='';
+};
+</script>
+</body>
+</html>
