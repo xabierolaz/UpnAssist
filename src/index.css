@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mejoras adicionales para móviles */
+@media (max-width: 768px) {
+  /* Optimización táctil */
+  .btn-touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Scroll suave en listas largas */
+  .scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Inputs más grandes para móvil */
+  input[type="text"], 
+  input[type="email"], 
+  textarea {
+    font-size: 16px; /* Previene zoom en iOS */
+  }
+}
+
+/* Utilidades responsive adicionales */
+@layer components {
+  .mobile-grid {
+    @apply grid grid-cols-1 gap-4;
+  }
+  
+  .tablet-grid {
+    @apply sm:grid-cols-2 md:grid-cols-3;
+  }
+  
+  .desktop-grid {
+    @apply lg:grid-cols-4 xl:grid-cols-5;
+  }
+}
