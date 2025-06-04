@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   HomeIcon, 
-  BookOpenIcon, 
   ChatBubbleLeftRightIcon, 
   EnvelopeIcon,
-  FolderIcon 
+  FolderIcon,
+  Squares2X2Icon 
 } from '@heroicons/react/24/outline';
 
 interface LayoutProps {
@@ -16,8 +16,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
 
   const navigation = [
+    { name: 'Aplicaciones', href: '/apps', icon: Squares2X2Icon },
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-    { name: 'Guía Profesorado', href: '/guide', icon: BookOpenIcon },
     { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
     { name: 'Correo', href: '/email', icon: EnvelopeIcon },
     { name: 'Recursos', href: '/resources', icon: FolderIcon },
