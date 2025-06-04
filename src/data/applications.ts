@@ -17,7 +17,8 @@ import {
   AcademicCapIcon,
   PresentationChartLineIcon,
   ComputerDesktopIcon,
-  WrenchScrewdriverIcon
+  WrenchScrewdriverIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 import type { Application, AppCategory, AppCategoryInfo } from '../types/applications';
@@ -102,8 +103,7 @@ export const applications: Application[] = [
     category: 'academico',
     color: 'bg-blue-800',
     isActive: false,
-    route: '/presentations'
-  },
+    route: '/presentations'  },
 
   // COMUNICACIÓN
   {
@@ -116,6 +116,15 @@ export const applications: Application[] = [
     isActive: true,
     route: '/chat',
     badge: 3
+  },  {
+    id: 'ai-assistant',
+    name: 'AmaIA',
+    description: 'Asistente inteligente sobre UpnAssist (Botón flotante)',
+    icon: SparklesIcon,
+    category: 'comunicacion',
+    color: 'bg-purple-500',
+    isActive: true,
+    route: '/dashboard'
   },
   {
     id: 'email',

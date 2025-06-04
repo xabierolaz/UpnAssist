@@ -7,6 +7,7 @@ import {
   FolderIcon,
   Squares2X2Icon 
 } from '@heroicons/react/24/outline';
+import FloatingAIButton from './FloatingAIButton';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,17 +15,15 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-
   const navigation = [
+    { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'Aplicaciones', href: '/apps', icon: Squares2X2Icon },
-    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
     { name: 'Correo', href: '/email', icon: EnvelopeIcon },
     { name: 'Recursos', href: '/resources', icon: FolderIcon },
   ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,12 +80,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             })}
           </div>
         </div>
-      </nav>
-
-      {/* Main content */}
+      </nav>      {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="text-center text-sm text-gray-500">
+            © 2025 UpnAssist - Portal del Profesorado | Desarrollado por Xabier Olaz Moratinos
+          </div>
+        </div>
+      </footer>      {/* Botón flotante de AmaIA */}
+      <FloatingAIButton />
     </div>
   );
 };

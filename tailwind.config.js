@@ -3,8 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
+  ],  theme: {
     extend: {
       colors: {
         primary: {
@@ -20,6 +19,10 @@ export default {
           900: '#1e3a8a',
         },
       },
+      gridTemplateColumns: {
+        '14': 'repeat(14, minmax(0, 1fr))',
+        '16': 'repeat(16, minmax(0, 1fr))',
+      }
     },
   },
   plugins: [],

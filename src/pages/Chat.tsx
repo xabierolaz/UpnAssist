@@ -11,7 +11,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { useChat } from '../hooks/useChat';
 
-const Chat: React.FC = () => {  const {
+const Chat: React.FC = () => {
+  const {
     messages,
     users,
     isConnected,
@@ -119,7 +120,7 @@ const Chat: React.FC = () => {  const {
         </div>
       )}
 
-      <div className="flex h-[calc(100vh-12rem)] bg-white shadow rounded-lg overflow-hidden">
+      <div className="flex h-[calc(100vh-16rem)] bg-white shadow rounded-lg overflow-hidden">
         {/* Sidebar with online users */}
         <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
           <div className="p-4 border-b border-gray-200">
@@ -207,7 +208,8 @@ const Chat: React.FC = () => {  const {
                   {getConnectionText()}
                 </span>
               </div>
-            </div>            {userName && (
+            </div>
+            {userName && (
               <div className="flex items-center justify-between mt-1">
                 <p className="text-sm text-gray-600">
                   Conectado como: <span className="font-medium">{userName}</span>
@@ -223,7 +225,8 @@ const Chat: React.FC = () => {  const {
           </div>
 
           {/* Messages area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">            {!isConnected && !isConnecting && (
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {!isConnected && !isConnecting && (
               <div className="text-center py-12">
                 <ChatBubbleLeftRightIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Bienvenido al Chat UPN</h3>
@@ -312,11 +315,10 @@ const Chat: React.FC = () => {  const {
             <div className="mt-2 text-xs text-gray-500">
               {newMessage.length}/500 caracteres {!isConnected && '• Conecta para enviar mensajes'}
             </div>
-          </div>
+          </div>          </div>
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  };
 
 export default Chat;

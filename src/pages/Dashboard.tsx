@@ -8,7 +8,9 @@ import {
   ArrowPathIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  EnvelopeIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 
 const Dashboard: React.FC = () => {
@@ -17,6 +19,7 @@ const Dashboard: React.FC = () => {
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [syncStatus, setSyncStatus] = useState<'synced' | 'error' | 'syncing'>('synced');
   const [lastSync, setLastSync] = useState<Date>(new Date());
+  const [showEmailAlerts, setShowEmailAlerts] = useState<boolean>(false);
 
   // Tipos para las clases - 3 asignaturas, 6 clases semanales (2 horas cada día)
   type Subject = 'Programación I' | 'Estructuras de Datos' | 'Bases de Datos';
@@ -48,9 +51,45 @@ const Dashboard: React.FC = () => {
     // Jueves - Programación I
     { id: '4', subject: 'Programación I', time: '14:00', location: 'A-329 Aulario', students: 45, dayOfWeek: 4 },
     // Viernes - Estructuras de Datos
-    { id: '5', subject: 'Estructuras de Datos', time: '11:00', location: 'E-201 Los Encinas', students: 38, dayOfWeek: 5 },
-    // Sábado - Bases de Datos
+    { id: '5', subject: 'Estructuras de Datos', time: '11:00', location: 'E-201 Los Encinas', students: 38, dayOfWeek: 5 },    // Sábado - Bases de Datos
     { id: '6', subject: 'Bases de Datos', time: '08:00', location: 'P-103 Los Pinos', students: 42, dayOfWeek: 6 }
+  ];
+
+  // Alertas de correos de estudiantes por asignatura
+  interface EmailAlert {
+    id: string;
+    subject: Subject;
+    studentName: string;
+    emailSubject: string;
+    time: string;
+    isUrgent: boolean;
+  }
+
+  const emailAlerts: EmailAlert[] = [
+    {
+      id: '1',
+      subject: 'Programación I',
+      studentName: 'Ana García López',
+      emailSubject: 'Consulta sobre el Proyecto Final',
+      time: '09:30',
+      isUrgent: false
+    },
+    {
+      id: '2',
+      subject: 'Bases de Datos',
+      studentName: 'Carlos Mendoza',
+      emailSubject: 'Error en el ejercicio de SQL',
+      time: '10:45',
+      isUrgent: true
+    },
+    {
+      id: '3',
+      subject: 'Estructuras de Datos',
+      studentName: 'María González',
+      emailSubject: 'Dudas sobre algoritmos de ordenamiento',
+      time: '14:20',
+      isUrgent: false
+    }
   ];
 
   // Función para sincronizar con Google Calendar
@@ -233,8 +272,7 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Interactive Calendar */}
         <div className="lg:col-span-2 bg-white shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="flex items-center justify-between mb-6">
+          <div className="px-4 py-5 sm:p-6">            <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900 flex items-center">
                 <CalendarIcon className="h-5 w-5 mr-2 text-primary-600" />
                 Calendario Académico
@@ -244,6 +282,74 @@ const Dashboard: React.FC = () => {
                   <syncInfo.icon className={`h-3 w-3 mr-1 ${isSyncing ? 'animate-spin' : ''}`} />
                   {syncInfo.text}
                 </span>
+                
+                {/* Botón de alertas de correo */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowEmailAlerts(!showEmailAlerts)}
+                    className="relative inline-flex items-center px-3 py-2 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+                  >
+                    <EnvelopeIcon className="h-4 w-4 mr-1" />
+                    Correos
+                    {emailAlerts.length > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {emailAlerts.length}
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Popup de alertas */}
+                  {showEmailAlerts && (
+                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                      <div className="p-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="text-sm font-medium text-gray-900">Correos de Estudiantes</h4>
+                          <button
+                            onClick={() => setShowEmailAlerts(false)}
+                            className="text-gray-400 hover:text-gray-600"
+                          >
+                            <XMarkIcon className="h-4 w-4" />
+                          </button>
+                        </div>
+                        
+                        <div className="space-y-3 max-h-64 overflow-y-auto">
+                          {emailAlerts.map((alert) => (
+                            <div
+                              key={alert.id}
+                              className={`p-3 rounded-lg border-l-4 ${
+                                alert.isUrgent 
+                                  ? 'border-red-500 bg-red-50' 
+                                  : 'border-blue-500 bg-blue-50'
+                              }`}
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center space-x-2 mb-1">
+                                    <span className={`inline-block w-2 h-2 rounded-full ${subjectColors[alert.subject]}`}></span>
+                                    <span className="text-xs font-medium text-gray-600">{alert.subject}</span>
+                                    {alert.isUrgent && (
+                                      <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">Urgente</span>
+                                    )}
+                                  </div>
+                                  <p className="text-sm font-medium text-gray-900 mb-1">{alert.studentName}</p>
+                                  <p className="text-xs text-gray-600 mb-2">{alert.emailSubject}</p>
+                                  <p className="text-xs text-gray-500">Recibido: {alert.time}</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <button className="w-full text-center text-sm text-primary-600 hover:text-primary-700 font-medium">
+                            Ver todos los correos →
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <button
                   onClick={handleSync}
                   disabled={isSyncing}

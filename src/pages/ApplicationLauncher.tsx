@@ -29,58 +29,53 @@ const ApplicationLauncher: React.FC = () => {
     } else if (app.route) {
       navigate(app.route);
     }
-  };
-
-  const getStatusBadge = (app: Application) => {
+  };  const getStatusBadge = (app: Application) => {
     if (!app.isActive) {
       return (
-        <span className="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-          Próximamente
+        <span className="absolute -top-1 -right-1 bg-yellow-500 text-white px-1 py-0.5 rounded-full text-xs leading-none">
+          Soon
         </span>
       );
     }
     if (app.badge) {
       return (
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white px-1 py-0.5 rounded-full min-w-[16px] text-center text-xs leading-none">
           {app.badge}
         </span>
       );
     }
     return null;
-  };
-
-  const AppCard: React.FC<{ app: Application }> = ({ app }) => {
+  };  const AppCard: React.FC<{ app: Application }> = ({ app }) => {
     const IconComponent = app.icon;
     
     return (
       <div
         onClick={() => handleAppClick(app)}
-        className={`relative p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
+        className={`relative p-3 rounded-lg border transition-all duration-200 cursor-pointer min-h-[100px] ${
           app.isActive 
-            ? 'border-gray-200 hover:border-blue-300 hover:shadow-lg bg-white' 
+            ? 'border-gray-200 hover:border-blue-300 hover:shadow-md bg-white' 
             : 'border-gray-100 bg-gray-50 opacity-75 hover:opacity-100'
         }`}
       >
         {getStatusBadge(app)}
         
-        <div className="flex flex-col items-center text-center">
-          <div className={`w-16 h-16 rounded-full ${app.color} flex items-center justify-center mb-4`}>
-            <IconComponent className="h-8 w-8 text-white" />
+        <div className="flex flex-col items-center text-center h-full justify-between">
+          <div className={`w-12 h-12 rounded-lg ${app.color} flex items-center justify-center mb-2`}>
+            <IconComponent className="h-6 w-6 text-white" />
           </div>
           
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            {app.name}
-          </h3>
+          <div className="flex-1 flex flex-col justify-center">
+            <h3 className="text-sm font-medium text-gray-900 mb-1 leading-tight line-clamp-2">
+              {app.name}
+            </h3>
+            
+            <p className="text-xs text-gray-500 line-clamp-2 leading-tight">
+              {app.description}
+            </p>
+          </div>
           
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {app.description}
-          </p>
-          
-          <div className="mt-4 flex items-center space-x-2">
+          <div className="mt-2 flex items-center justify-center">
             <span className={`inline-block w-2 h-2 rounded-full ${app.isActive ? 'bg-green-500' : 'bg-yellow-500'}`}></span>
-            <span className="text-xs text-gray-500">
-              {app.isActive ? 'Disponible' : 'En desarrollo'}
-            </span>
           </div>
         </div>
       </div>
@@ -182,10 +177,8 @@ const ApplicationLauncher: React.FC = () => {
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Category Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      </div>      {/* Category Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {Object.values(appCategories).map(category => {
           const appsInCategory = getApplicationsByCategory(category.id);
           const activeApps = appsInCategory.filter(app => app.isActive).length;
@@ -195,7 +188,7 @@ const ApplicationLauncher: React.FC = () => {
             <div
               key={category.id}
               onClick={() => setSelectedCategory(selectedCategory === category.id ? 'all' : category.id)}
-              className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              className={`p-3 rounded-lg border cursor-pointer transition-all ${
                 selectedCategory === category.id 
                   ? 'border-blue-500 bg-blue-50' 
                   : 'border-gray-200 hover:border-gray-300'
@@ -227,9 +220,8 @@ const ApplicationLauncher: React.FC = () => {
             <p className="text-gray-500">No se encontraron aplicaciones</p>
           </div>
         ) : (
-          <>
-            {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <>            {viewMode === 'grid' ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {filteredApplications.map(app => (
                   <AppCard key={app.id} app={app} />
                 ))}
