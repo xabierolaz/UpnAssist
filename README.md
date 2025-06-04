@@ -1,6 +1,13 @@
 # UpnAssist - Portal del Profesorado
 
+[![UpnAssist](https://img.shields.io/badge/Web-Acceder%20Online-blue?style=for-the-badge&logo=vercel)](https://upnassist.vercel.app/)
+
 UpnAssist es una aplicación web moderna diseñada específicamente para profesores universitarios. Integra múltiples herramientas y recursos académicos en una sola plataforma fácil de usar.
+
+## 🌐 Acceso Online
+**🚀 [Acceder a UpnAssist](https://upnassist.vercel.app/)**
+
+*Desarrollado por **Xabier Olaz Moratinos** como herramienta de ayuda personal docente e investigador.*
 
 ## 📱💻 **100% Responsive - Web y Móvil**
 
@@ -161,6 +168,18 @@ VITE_EMAIL_API=https://tu-email-api.com
 ## 📝 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## 👨‍🏫 Desarrollador
+
+**Xabier Olaz Moratinos**
+- Herramienta de ayuda personal docente e investigador
+- Desarrollada para optimizar la gestión académica y administrativa
+- Enfoque en usabilidad y eficiencia para profesionales de la educación
+
+---
+
+### 🎯 Propósito
+UpnAssist nace de la necesidad de centralizar y simplificar las herramientas digitales que los profesores universitarios utilizan en su día a día, proporcionando una interfaz unificada e intuitiva para mejorar la productividad académica.
 
 ## 🎓 Universidad
 
