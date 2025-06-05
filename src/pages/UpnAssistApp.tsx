@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../context/AuthContext';
+import { ChatRoomsProvider } from '../context/ChatRoomsContext';
 import PasswordLogin from '../components/PasswordLogin';
 import Layout from '../components/Layout';
 import Dashboard from './Dashboard';
@@ -38,7 +39,9 @@ const ProtectedUpnAssist: React.FC = () => {
 const UpnAssistApp: React.FC = () => {
   return (
     <AuthProvider>
-      <ProtectedUpnAssist />
+      <ChatRoomsProvider>
+        <ProtectedUpnAssist />
+      </ChatRoomsProvider>
     </AuthProvider>
   );
 };

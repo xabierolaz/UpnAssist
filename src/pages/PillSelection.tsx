@@ -65,21 +65,21 @@ const PillSelection: React.FC = () => {
           </div>
         </div>{/* Menu Options */}
         <div className="text-left space-y-6">
-          <div className="flex items-center text-xl">
+          <div className="flex items-center text-sm mb-4">
             <span className="text-green-400 mr-4">{'>'}</span>
             <button
               onClick={handleUpnAssist}
-              className="text-red-500 hover:text-red-400 hover:bg-red-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-red-500/30 text-2xl font-bold tracking-wider hover:scale-105"
+              className="text-green-400 hover:text-green-300 hover:bg-green-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 font-matrix tracking-wider"
             >
               UpnAssist
             </button>
           </div>
           
-          <div className="flex items-center text-xl">
+          <div className="flex items-center text-sm mb-4">
             <span className="text-green-400 mr-4">{'>'}</span>
             <button
               onClick={handlePyXom}
-              className="text-blue-500 hover:text-blue-400 hover:bg-blue-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 text-2xl font-bold tracking-wider hover:scale-105"
+              className="text-green-400 hover:text-green-300 hover:bg-green-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 font-matrix tracking-wider"
             >
               PyXOM
             </button>

@@ -307,4 +307,3 @@ export default AIService;
 
 const aiService = new AIService();
 export { aiService };
-export type { AIResponse };

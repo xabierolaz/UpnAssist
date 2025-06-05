@@ -82,8 +82,12 @@ El chat de UpnAssist está diseñado para funcionar **sin problemas entre difere
 
 ## 🔒 Privacidad y Seguridad
 
+- **Cifrado de extremo a extremo**: Los mensajes se cifran en tu dispositivo con AES-GCM de 256 bits
+- **Verificación visual**: Indicadores de cifrado en cada mensaje y en la interfaz
 - **No se almacenan mensajes**: Los mensajes no se guardan en el servidor
-- **Temporal**: Solo existen mientras estás conectado
+- **Solo en caché local**: Los mensajes solo se almacenan temporalmente en tu navegador
+- **Limpieza automática**: Los mensajes antiguos se eliminan automáticamente después de 7 días
+- **Control manual**: Puedes borrar todo tu historial de chat en cualquier momento
 - **Sala Privada**: Solo profesores UPN en la sala "upn-professors"
 - **Sin datos personales**: Solo se requiere un nombre de usuario
 
@@ -103,6 +107,30 @@ El chat de UpnAssist está diseñado para funcionar **sin problemas entre difere
 - Profesor viajando con móvil
 - Conexión desde diferentes ubicaciones
 - Respuestas rápidas en movimiento
+
+## ❓ Preguntas Frecuentes sobre Seguridad
+
+### ¿Qué significa "cifrado de extremo a extremo"?
+Significa que tus mensajes se cifran en tu dispositivo antes de enviarse por internet. Solo los participantes del chat pueden descifrar y leer los mensajes. Ni siquiera el servidor que transmite los mensajes puede ver su contenido.
+
+### ¿Cómo sé que mis mensajes están realmente cifrados?
+Puedes verificarlo de varias formas:
+1. Verás un icono de candado 🔒 junto a cada mensaje cifrado
+2. El indicador de "Cifrado activo" aparecerá en verde en la parte superior
+3. Puedes hacer clic en el botón de información para ver detalles técnicos
+
+### ¿Por cuánto tiempo se guardan mis mensajes?
+Los mensajes solo se almacenan temporalmente en tu dispositivo:
+- Se guardan en el caché local de tu navegador
+- Se mantienen por un máximo de 7 días
+- Se eliminan automáticamente después de este período
+- Puedes borrarlos manualmente en cualquier momento con el botón "Borrar historial"
+
+### ¿Qué ocurre si cambio de dispositivo?
+Al cambiar de dispositivo, comenzarás con un historial de chat vacío. Los mensajes solo existen en el dispositivo donde los recibiste originalmente.
+
+### ¿Qué algoritmo de cifrado se utiliza?
+Se utiliza AES-GCM (Advanced Encryption Standard en modo Galois/Counter) con claves de 256 bits, uno de los estándares de cifrado más seguros disponibles actualmente.
 
 ---
 

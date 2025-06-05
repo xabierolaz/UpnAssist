@@ -1,453 +1,213 @@
-import React, { useState } from 'react';
-import {
-  DocumentDuplicateIcon,
-  CloudArrowUpIcon,
-  MagnifyingGlassIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  InformationCircleIcon,
-  DocumentTextIcon,
-  ArrowPathIcon,
-  ChartBarIcon,
-  EyeIcon,
-  TrashIcon
-} from '@heroicons/react/24/outline';
-
-interface UploadedDocument {
-  id: string;
-  name: string;
-  size: string;
-  uploadDate: Date;
-  status: 'analyzing' | 'completed' | 'error';
-  similarityPercentage?: number;
-  sources?: SimilaritySource[];
-}
-
-interface SimilaritySource {
-  id: string;
-  title: string;
-  url?: string;
-  similarity: number;
-  type: 'web' | 'academic' | 'student_work' | 'database';
-  matchedText: string;
-}
+import React, { useState, useRef } from 'react';
+import { ArrowPathIcon, DocumentTextIcon, FolderIcon } from '@heroicons/react/24/outline';
+import { jplagService, type JPlagResult } from '../services/JPlagService';
 
 const PlagiarismDetector: React.FC = () => {
-  const [documents, setDocuments] = useState<UploadedDocument[]>([
-    {
-      id: '1',
-      name: 'Ensayo_Programacion_Juan_Perez.docx',
-      size: '1.2 MB',
-      uploadDate: new Date('2024-01-15'),
-      status: 'completed',
-      similarityPercentage: 23,
-      sources: [
-        {
-          id: '1',
-          title: 'Wikipedia - Programación orientada a objetos',
-          url: 'https://es.wikipedia.org/wiki/Programación_orientada_a_objetos',
-          similarity: 15,
-          type: 'web',
-          matchedText: 'La programación orientada a objetos es un paradigma de programación...'
-        },
-        {
-          id: '2',
-          title: 'Trabajo anterior - María García (2023)',
-          similarity: 8,
-          type: 'student_work',
-          matchedText: 'Los principios fundamentales de la POO incluyen encapsulación...'
-        }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Proyecto_BaseDatos_Ana_Lopez.pdf',
-      size: '2.8 MB',
-      uploadDate: new Date('2024-01-14'),
-      status: 'completed',
-      similarityPercentage: 67,
-      sources: [
-        {
-          id: '3',
-          title: 'GitHub - Sistema de gestión universitaria',
-          url: 'https://github.com/university/management-system',
-          similarity: 45,
-          type: 'web',
-          matchedText: 'CREATE TABLE estudiantes (id INT PRIMARY KEY...'
-        },
-        {
-          id: '4',
-          title: 'Stack Overflow - SQL Queries for University System',
-          url: 'https://stackoverflow.com/questions/12345',
-          similarity: 22,
-          type: 'web',
-          matchedText: 'SELECT * FROM cursos WHERE profesor_id = ?'
-        }
-      ]
-    },
-    {
-      id: '3',
-      name: 'Algoritmos_Carlos_Martinez.docx',
-      size: '956 KB',
-      uploadDate: new Date('2024-01-13'),
-      status: 'analyzing',
-      similarityPercentage: undefined
-    }
-  ]);
-
-  const [dragActive, setDragActive] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState<UploadedDocument | null>(null);
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState<JPlagResult | null>(null);
+  const [selectedDirectory, setSelectedDirectory] = useState<string>('');
+  const [language, setLanguage] = useState<string>('java');
+  const [threshold, setThreshold] = useState<number>(50);
+  const directoryInputRef = useRef<HTMLInputElement>(null);
+  
+  const handleDirectorySelect = () => {
+    if (directoryInputRef.current) {
+      directoryInputRef.current.click();
     }
   };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+  
+  const handleDirectoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // En un entorno real, aquí procesaríamos la carpeta seleccionada
+      setSelectedDirectory(files[0].name.split('\\').pop() || '');
+    }
+  };
+  
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     
-    const files = Array.from(e.dataTransfer.files);
-    handleFiles(files);
-  };
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      handleFiles(files);
+    if (!selectedDirectory) {
+      alert('Por favor, seleccione una carpeta con entregas para analizar');
+      return;
     }
-  };
-
-  const handleFiles = (files: File[]) => {
-    files.forEach((file, index) => {
-      const newDoc: UploadedDocument = {
-        id: Date.now().toString() + index,
-        name: file.name,
-        size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-        uploadDate: new Date(),
-        status: 'analyzing'
-      };
+    
+    setIsLoading(true);
+    
+    try {
+      // En un entorno real, esto conectaría con el JPlag traducido
+      // const result = await jplagService.runAnalysis(selectedDirectory, {
+      //   language,
+      //   similarityThreshold: threshold / 100,
+      // });
       
-      setDocuments(prev => [newDoc, ...prev]);
-      
-      // Simular análisis
+      // Simulamos la respuesta para la demo
       setTimeout(() => {
-        setDocuments(prev => prev.map(doc => 
-          doc.id === newDoc.id 
-            ? { 
-                ...doc, 
-                status: 'completed' as const, 
-                similarityPercentage: Math.floor(Math.random() * 70) + 10,
-                sources: generateMockSources()
-              }
-            : doc
-        ));
-      }, 3000 + Math.random() * 2000);
-    });
-  };
-
-  const generateMockSources = (): SimilaritySource[] => {
-    const sources = [
-      { title: 'Wikipedia - Algoritmos de ordenamiento', url: 'https://es.wikipedia.org/wiki/Algoritmo_de_ordenamiento', type: 'web' as const },
-      { title: 'GeeksforGeeks - Data Structures', url: 'https://www.geeksforgeeks.org/data-structures/', type: 'web' as const },
-      { title: 'Trabajo anterior - Estudiante UPN', type: 'student_work' as const },
-      { title: 'IEEE Paper - Complexity Analysis', type: 'academic' as const },
-      { title: 'Stack Overflow - Programming Solutions', url: 'https://stackoverflow.com', type: 'web' as const }
-    ];
-    
-    return sources.slice(0, Math.floor(Math.random() * 3) + 1).map((source, index) => ({
-      id: index.toString(),
-      title: source.title,
-      url: source.url,
-      similarity: Math.floor(Math.random() * 30) + 5,
-      type: source.type,
-      matchedText: 'Texto coincidente de ejemplo que muestra la similitud encontrada...'
-    }));
-  };
-
-  const getSimilarityColor = (percentage: number) => {
-    if (percentage < 15) return 'text-green-600 bg-green-100';
-    if (percentage < 30) return 'text-yellow-600 bg-yellow-100';
-    if (percentage < 50) return 'text-orange-600 bg-orange-100';
-    return 'text-red-600 bg-red-100';
-  };
-
-  const getSimilarityIcon = (percentage: number) => {
-    if (percentage < 15) return CheckCircleIcon;
-    if (percentage < 30) return InformationCircleIcon;
-    return ExclamationTriangleIcon;
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'web': return '🌐';
-      case 'academic': return '📚';
-      case 'student_work': return '👥';
-      case 'database': return '🗄️';
-      default: return '📄';
+        const mockResult: JPlagResult = {
+          success: true,
+          averageSimilarity: 35.8,
+          similarities: [
+            { submission1: 'estudiante01', submission2: 'estudiante04', similarity: 95.2 },
+            { submission1: 'estudiante01', submission2: 'estudiante03', similarity: 82.5 },
+            { submission1: 'estudiante03', submission2: 'estudiante08', similarity: 78.1 },
+            { submission1: 'estudiante06', submission2: 'estudiante18', similarity: 65.3 },
+            { submission1: 'estudiante09', submission2: 'estudiante15', similarity: 60.0 },
+            { submission1: 'estudiante02', submission2: 'estudiante07', similarity: 45.2 },
+          ],
+          outputPath: 'd:\\UpnAssist\\plagiarism-report.jplag'
+        };
+        
+        setResults(mockResult);
+        setIsLoading(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error al ejecutar análisis:', error);
+      alert('Error al ejecutar el análisis. Consulte la consola para más detalles.');
+      setIsLoading(false);
     }
   };
-
-  const deleteDocument = (id: string) => {
-    setDocuments(prev => prev.filter(doc => doc.id !== id));
-    if (selectedDocument?.id === id) {
-      setSelectedDocument(null);
-    }
-  };
-
+  
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-          <DocumentDuplicateIcon className="h-8 w-8 mr-3 text-blue-600" />
-          Detector de Copias
-        </h1>
-        <p className="mt-2 text-gray-600">
-          Analiza documentos académicos para detectar posibles plagios y similitudes
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Upload Area & Document List */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Upload Area */}
-          <div className="bg-white shadow rounded-lg p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Subir Documentos</h3>
-            
-            <div
-              className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                dragActive 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : 'border-gray-300 hover:border-gray-400'
-              }`}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            >
-              <CloudArrowUpIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-lg font-medium text-gray-900 mb-2">
-                Arrastra documentos aquí o haz clic para seleccionar
-              </p>
-              <p className="text-sm text-gray-500 mb-4">
-                Soporta: PDF, DOC, DOCX, TXT (Máximo 10MB por archivo)
-              </p>
-              <input
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Detector de Plagios (JPlag)</h1>
+          <p className="text-gray-600 mb-6">
+            Esta herramienta utiliza JPlag para detectar similitudes entre entregas de estudiantes.
+            Seleccione la carpeta que contiene las entregas a analizar.
+          </p>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+              <FolderIcon className="h-12 w-12 mx-auto text-gray-400" />
+              <p className="mt-2 text-sm text-gray-500">
+                Seleccione la carpeta con las entregas a analizar
+              </p>              <input
                 type="file"
-                multiple
-                accept=".pdf,.doc,.docx,.txt"
-                onChange={handleFileInput}
+                // @ts-ignore - webkitdirectory no está en los tipos de TypeScript pero es compatible con navegadores
+                webkitdirectory="true"
+                // @ts-ignore - directory no está en los tipos de TypeScript pero es compatible con navegadores
+                directory=""
+                ref={directoryInputRef}
+                onChange={handleDirectoryChange}
                 className="hidden"
-                id="file-upload"
+                id="directory-upload"
               />
-              <label
-                htmlFor="file-upload"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 cursor-pointer"
+              <button
+                type="button"
+                onClick={handleDirectorySelect}
+                className="mt-2 inline-block px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700"
               >
-                Seleccionar Archivos
-              </label>
-            </div>
-          </div>
-
-          {/* Documents List */}
-          <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Documentos Analizados</h3>
-            </div>
-            <div className="divide-y divide-gray-200">
-              {documents.map((doc) => {
-                const SimilarityIcon = doc.similarityPercentage ? getSimilarityIcon(doc.similarityPercentage) : InformationCircleIcon;
-                
-                return (
-                  <div key={doc.id} className="p-6 hover:bg-gray-50">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-start space-x-4">
-                        <DocumentTextIcon className="h-8 w-8 text-gray-400 mt-1" />
-                        <div className="flex-1">
-                          <h4 className="text-sm font-medium text-gray-900 truncate max-w-md">
-                            {doc.name}
-                          </h4>
-                          <div className="mt-1 flex items-center space-x-4 text-sm text-gray-500">
-                            <span>{doc.size}</span>
-                            <span>•</span>
-                            <span>{doc.uploadDate.toLocaleDateString('es-ES')}</span>
-                          </div>
-                          
-                          {doc.status === 'analyzing' && (
-                            <div className="mt-2 flex items-center space-x-2">
-                              <ArrowPathIcon className="h-4 w-4 text-blue-500 animate-spin" />
-                              <span className="text-sm text-blue-600">Analizando...</span>
-                            </div>
-                          )}
-                          
-                          {doc.status === 'completed' && doc.similarityPercentage !== undefined && (
-                            <div className="mt-2 flex items-center space-x-2">
-                              <SimilarityIcon className={`h-4 w-4 ${getSimilarityColor(doc.similarityPercentage).split(' ')[0]}`} />
-                              <span className={`text-sm px-2 py-1 rounded-full ${getSimilarityColor(doc.similarityPercentage)}`}>
-                                {doc.similarityPercentage}% similitud
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2">
-                        {doc.status === 'completed' && (
-                          <button
-                            onClick={() => setSelectedDocument(doc)}
-                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full"
-                            title="Ver detalles"
-                          >
-                            <EyeIcon className="h-5 w-5" />
-                          </button>
-                        )}
-                        <button
-                          onClick={() => deleteDocument(doc.id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full"
-                          title="Eliminar"
-                        >
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              
-              {documents.length === 0 && (
-                <div className="p-8 text-center">
-                  <MagnifyingGlassIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No hay documentos para analizar</p>
+                Seleccionar carpeta
+              </button>
+              {selectedDirectory && (
+                <div className="mt-4 text-sm text-left">
+                  <p className="font-medium">Carpeta seleccionada:</p>
+                  <p className="text-gray-600">{selectedDirectory}</p>
                 </div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* Details Panel */}
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">
-              {selectedDocument ? 'Detalles del Análisis' : 'Estadísticas Generales'}
-            </h3>
-          </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-1">
+                  Lenguaje de programación
+                </label>
+                <select
+                  id="language"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                >
+                  <option value="java">Java</option>
+                  <option value="python">Python</option>
+                  <option value="cpp">C/C++</option>
+                  <option value="csharp">C#</option>
+                  <option value="javascript">JavaScript</option>
+                  <option value="text">Texto</option>
+                </select>
+              </div>
+              
+              <div>
+                <label htmlFor="threshold" className="block text-sm font-medium text-gray-700 mb-1">
+                  Umbral de similitud: {threshold}%
+                </label>
+                <input
+                  type="range"
+                  id="threshold"
+                  min="0"
+                  max="100"
+                  value={threshold}
+                  onChange={(e) => setThreshold(parseInt(e.target.value))}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={isLoading || !selectedDirectory}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400 flex items-center"
+              >
+                {isLoading ? (
+                  <>
+                    <ArrowPathIcon className="h-5 w-5 mr-2 animate-spin" />
+                    Analizando...
+                  </>
+                ) : (
+                  <>
+                    <DocumentTextIcon className="h-5 w-5 mr-2" />
+                    Analizar entregas
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
           
-          {selectedDocument ? (
-            <div className="p-6">
-              <div className="mb-6">
-                <h4 className="font-medium text-gray-900 mb-2 truncate" title={selectedDocument.name}>
-                  {selectedDocument.name}
-                </h4>
-                {selectedDocument.similarityPercentage !== undefined && (
-                  <div className="flex items-center space-x-2">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full ${
-                          selectedDocument.similarityPercentage < 15 ? 'bg-green-500' :
-                          selectedDocument.similarityPercentage < 30 ? 'bg-yellow-500' :
-                          selectedDocument.similarityPercentage < 50 ? 'bg-orange-500' : 'bg-red-500'
-                        }`}
-                        style={{ width: `${selectedDocument.similarityPercentage}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-sm font-medium">
-                      {selectedDocument.similarityPercentage}%
+          {results && (
+            <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-md">
+              <h2 className="text-xl font-medium text-blue-800 mb-4">Resultados del análisis</h2>
+              
+              <div className="mb-4 p-3 bg-white rounded-md shadow-sm">
+                <p className="text-gray-700 font-medium">
+                  Similitud promedio: <span className="text-blue-600 font-bold">{results.averageSimilarity.toFixed(1)}%</span>
+                </p>
+                <p className="text-gray-600 text-sm mt-1">
+                  Reporte completo generado en: <span className="font-mono text-xs">{results.outputPath}</span>
+                </p>
+              </div>
+              
+              <h3 className="text-lg font-medium text-blue-700 mb-2">Coincidencias principales:</h3>
+              <div className="space-y-2 mb-4">
+                {results.similarities.map((similarity, index) => (
+                  <div 
+                    key={index} 
+                    className="flex justify-between items-center p-2 rounded-md"
+                    style={{
+                      backgroundColor: `rgba(239, 68, 68, ${similarity.similarity / 100})`
+                    }}
+                  >
+                    <span className="font-medium text-gray-800">
+                      {similarity.submission1} - {similarity.submission2}
+                    </span>
+                    <span className="font-bold text-red-900">
+                      {similarity.similarity.toFixed(1)}%
                     </span>
                   </div>
-                )}
-              </div>
-
-              {selectedDocument.sources && selectedDocument.sources.length > 0 && (
-                <div>
-                  <h5 className="font-medium text-gray-900 mb-3">Fuentes Detectadas:</h5>
-                  <div className="space-y-3">
-                    {selectedDocument.sources.map((source) => (
-                      <div key={source.id} className="border border-gray-200 rounded-lg p-3">
-                        <div className="flex items-start space-x-3">
-                          <span className="text-lg">{getTypeIcon(source.type)}</span>
-                          <div className="flex-1">
-                            <h6 className="text-sm font-medium text-gray-900 mb-1">
-                              {source.title}
-                            </h6>
-                            {source.url && (
-                              <p className="text-xs text-blue-600 mb-2 truncate">
-                                {source.url}
-                              </p>
-                            )}
-                            <p className="text-xs text-gray-600 mb-2">
-                              "{source.matchedText}"
-                            </p>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs text-gray-500 capitalize">
-                                {source.type.replace('_', ' ')}
-                              </span>
-                              <span className="text-xs font-medium text-red-600">
-                                {source.similarity}% coincidencia
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="p-6">
-              <div className="grid grid-cols-1 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <ChartBarIcon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-blue-900">
-                    {documents.length}
-                  </p>
-                  <p className="text-xs text-blue-600">Documentos analizados</p>
-                </div>
-                
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <CheckCircleIcon className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-green-900">
-                    {documents.filter(d => d.similarityPercentage && d.similarityPercentage < 15).length}
-                  </p>
-                  <p className="text-xs text-green-600">Sin problemas</p>
-                </div>
-                
-                <div className="text-center p-4 bg-red-50 rounded-lg">
-                  <ExclamationTriangleIcon className="h-8 w-8 text-red-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-red-900">
-                    {documents.filter(d => d.similarityPercentage && d.similarityPercentage >= 50).length}
-                  </p>
-                  <p className="text-xs text-red-600">Alta similitud</p>
-                </div>
+                ))}
               </div>
               
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h5 className="text-sm font-medium text-gray-900 mb-2">Guía de Interpretación</h5>
-                <div className="space-y-2 text-xs text-gray-600">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-green-500 rounded"></div>
-                    <span>0-15%: Aceptable</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-                    <span>15-30%: Revisar</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-orange-500 rounded"></div>
-                    <span>30-50%: Preocupante</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-red-500 rounded"></div>
-                    <span>50%+: Muy alta</span>
-                  </div>
-                </div>
+              <div className="flex justify-between mt-4">
+                <button 
+                  className="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
+                  onClick={() => setResults(null)}
+                >
+                  Nuevo análisis
+                </button>
+                <button className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                  Ver reporte completo
+                </button>
               </div>
             </div>
           )}
@@ -456,5 +216,7 @@ const PlagiarismDetector: React.FC = () => {
     </div>
   );
 };
+
+export default PlagiarismDetector;
 
 export default PlagiarismDetector;
