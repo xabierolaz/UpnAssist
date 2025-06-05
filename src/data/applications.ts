@@ -255,7 +255,7 @@ export const applications: Application[] = [
     action: () => {
       if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
         // Lógica de cierre de sesión
-        console.log('Cerrando sesión...');
+        // Logout logic would go here
       }
     }
   }

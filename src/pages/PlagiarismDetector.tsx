@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { ArrowPathIcon, DocumentTextIcon, FolderIcon } from '@heroicons/react/24/outline';
-import { jplagService, type JPlagResult } from '../services/JPlagService';
+import type { JPlagResult } from '../services/JPlagService';
 
 const PlagiarismDetector: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -216,7 +216,5 @@ const PlagiarismDetector: React.FC = () => {
     </div>
   );
 };
-
-export default PlagiarismDetector;
 
 export default PlagiarismDetector;

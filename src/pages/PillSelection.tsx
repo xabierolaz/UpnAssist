@@ -69,7 +69,7 @@ const PillSelection: React.FC = () => {
             <span className="text-green-400 mr-4">{'>'}</span>
             <button
               onClick={handleUpnAssist}
-              className="text-green-400 hover:text-green-300 hover:bg-green-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 font-matrix tracking-wider"
+              className="text-red-400 hover:text-red-300 hover:bg-red-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-red-500/30 font-matrix tracking-wider"
             >
               UpnAssist
             </button>
@@ -79,7 +79,7 @@ const PillSelection: React.FC = () => {
             <span className="text-green-400 mr-4">{'>'}</span>
             <button
               onClick={handlePyXom}
-              className="text-green-400 hover:text-green-300 hover:bg-green-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 font-matrix tracking-wider"
+              className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/20 px-3 py-1 rounded transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 font-matrix tracking-wider"
             >
               PyXOM
             </button>

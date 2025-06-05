@@ -8,7 +8,7 @@ import {
   LockClosedIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import { useMultiRoomChat } from '../hooks/useChat';
+import { useMultiRoomChat } from '../hooks/useMultiRoomChat';
 import { useChatRooms } from '../context/ChatRoomsContext';
 import type { SubjectRoom } from '../types/subject';
 import type { Message } from '../types/chat';
@@ -16,19 +16,16 @@ import SecurityInfoModal from '../components/SecurityInfoModal';
 import EncryptionIndicator from '../components/EncryptionIndicator';
 import ChatRoomList from '../components/ChatRoomList';
 
-const Chat: React.FC = () => {
-  const {
+const Chat: React.FC = () => {  const {
     messages,
     users,
     isConnected,
     isConnecting,
     userName,
-    currentRoomId,
     encryptionStatus,
     connect,
     joinRoom,
     sendMessage,
-    refreshUserList,
     clearHistory
   } = useMultiRoomChat();
 
@@ -36,13 +33,12 @@ const Chat: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const [showSecurityInfoModal, setShowSecurityInfoModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
   // Auto-scroll cuando hay nuevos mensajes
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, currentRoomId]);
+  }, [messages, selectedRoom?.subject.roomId]);
 
   // Conectar al chat si hay nombre de usuario
   useEffect(() => {
@@ -57,13 +53,12 @@ const Chat: React.FC = () => {
       await joinRoom(room.subject);
     }
   };
-
   // Manejar envío de mensajes
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMessage.trim() && isConnected) {
+    if (newMessage.trim() && isConnected && selectedRoom) {
       try {
-        const success = await sendMessage(newMessage.trim());
+        const success = await sendMessage(newMessage.trim(), selectedRoom.subject.roomId);
         if (success) {
           setNewMessage('');
         }
@@ -127,41 +122,29 @@ const Chat: React.FC = () => {
 
             {/* Información de conexión/sala */}
             {isConnected && selectedRoom && (
-              <div className="flex items-center justify-between mt-2">
-                <p className="text-sm text-gray-600">
+              <div className="flex items-center justify-between mt-2">                <p className="text-sm text-gray-600">
                   Sala: <span className="font-medium">{selectedRoom.subject.name}</span>
                   {' · '}
-                  <span className="font-medium">{users[currentRoomId || '']?.length || 0} participantes</span>
+                  <span className="font-medium">{users[selectedRoom.subject.roomId]?.length || 0} participantes</span>
                 </p>
-                <div className="flex items-center space-x-3">
-                  <EncryptionIndicator
+                <div className="flex items-center space-x-3">                  <EncryptionIndicator
                     isEnabled={encryptionStatus.enabled}
-                    timestamp={encryptionStatus.lastCleanup}
-                    count={users[currentRoomId || '']?.length || 0}
-                  />
-                  <div
+                    timestamp={encryptionStatus.lastCleanup?.timestamp || new Date()}
+                    count={users[selectedRoom.subject.roomId]?.length || 0}
+                  />                  <div
                     className="flex items-center text-sm text-gray-500 cursor-pointer hover:text-primary-600"
-                    onClick={() => currentRoomId && refreshUserList(currentRoomId)}
-                    title="Actualizar lista de usuarios"
-                  >
-                    <ArrowPathIcon className="h-4 w-4 hover:animate-spin" />
-                  </div>
-                  <button
-                    onClick={() => currentRoomId && clearHistory(currentRoomId)}
-                    className="text-sm text-gray-500 hover:text-red-600 flex items-center"
-                    title="Limpiar historial"
+                    onClick={() => selectedRoom && clearHistory(selectedRoom.subject.roomId)}
+                    title="Limpiar historial de esta sala"
                   >
                     <TrashIcon className="h-4 w-4" />
-                  </button>
+                  </div>
                 </div>
               </div>
             )}
           </div>
-        </div>
-
-        {/* Área de mensajes */}
+        </div>        {/* Área de mensajes */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-          {currentRoomId && messages[currentRoomId]?.map((message: Message) => (
+          {selectedRoom && messages[selectedRoom.subject.roomId]?.map((message: Message) => (
             <div
               key={message.id}
               className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'}`}

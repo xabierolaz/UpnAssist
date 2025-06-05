@@ -3,8 +3,8 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { Message, User } from '../types';
-import { Subject, SubjectRoom } from '../types/subject';
+import type { Message, User } from '../types';
+import type { Subject, SubjectRoom } from '../types/subject';
 import { multiRoomChatService } from '../services/MultiRoomChatService';
 import { subjectService } from '../services/SubjectService';
 import { saveMessagesToLocalStorage, getMessagesFromLocalStorage, clearChatHistory } from '../utils/chatStorage';

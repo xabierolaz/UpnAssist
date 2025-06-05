@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { Subject, SubjectRoom } from '../types/subject';
+import type { Subject, SubjectRoom } from '../types/subject';
 import { subjectService } from '../services/SubjectService';
 import { sampleSubjects } from '../data/sampleSubjects';
 

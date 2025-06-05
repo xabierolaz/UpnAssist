@@ -7,6 +7,7 @@ export interface Message {
   timestamp: Date;
   isOwn: boolean;
   encrypted?: boolean; // Indica si el mensaje está cifrado
+  roomId?: string; // ID de la sala donde se envió el mensaje
 }
 
 export interface User {

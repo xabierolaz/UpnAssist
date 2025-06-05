@@ -2,7 +2,7 @@
  * Servicio para gestionar las asignaturas y sus salas de chat
  */
 
-import { Subject, SubjectRoom } from '../types/subject';
+import type { Subject, SubjectRoom } from '../types/subject';
 
 class SubjectService {
   private subjects: Map<string, Subject> = new Map();
@@ -20,16 +20,15 @@ class SubjectService {
     try {
       const savedSubjects = localStorage.getItem('upn-subjects');
       const savedRooms = localStorage.getItem('upn-subject-rooms');
-      
-      if (savedSubjects) {
-        const parsed = JSON.parse(savedSubjects);
+        if (savedSubjects) {
+        const parsed = JSON.parse(savedSubjects) as Record<string, Subject>;
         Object.values(parsed).forEach((subject: Subject) => {
           this.subjects.set(subject.id, subject);
         });
       }
       
       if (savedRooms) {
-        const parsed = JSON.parse(savedRooms);
+        const parsed = JSON.parse(savedRooms) as Record<string, SubjectRoom>;
         Object.values(parsed).forEach((room: SubjectRoom) => {
           room.lastActivity = new Date(room.lastActivity); // Convertir string a Date
           this.rooms.set(room.subject.id, room);

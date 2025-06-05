@@ -7,7 +7,7 @@ interface AIMessage {
   timestamp: Date;
 }
 
-interface AIResponse {
+export interface AIResponse {
   message: string;
   source: 'ollama' | 'openrouter' | 'fallback';
   model?: string;

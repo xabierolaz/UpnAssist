@@ -268,7 +268,7 @@ export class MultiRoomChatService {
     
     this.pingInterval = window.setInterval(() => {
       if (this.socket && this.isConnected) {
-        this.activeRooms.forEach((roomInfo, roomId) => {
+        this.activeRooms.forEach((_, roomId) => {
           this.socket?.emit('room-ping', {
             roomId,
             userId: this.userId,
