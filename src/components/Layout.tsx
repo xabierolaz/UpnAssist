@@ -5,7 +5,8 @@ import {
   ChatBubbleLeftRightIcon, 
   EnvelopeIcon,
   FolderIcon,
-  Squares2X2Icon 
+  Squares2X2Icon,
+  QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline';
 import FloatingAIButton from './FloatingAIButton';
 
@@ -14,13 +15,13 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const location = useLocation();
-  const navigation = [
+  const location = useLocation();  const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'Aplicaciones', href: '/apps', icon: Squares2X2Icon },
     { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
     { name: 'Correo', href: '/email', icon: EnvelopeIcon },
     { name: 'Recursos', href: '/resources', icon: FolderIcon },
+    { name: 'Ayuda', href: '/help', icon: QuestionMarkCircleIcon },
   ];
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -92,7 +93,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             © 2025 UpnAssist - Portal del Profesorado | Desarrollado por Xabier Olaz Moratinos
           </div>
         </div>
-      </footer>      {/* Botón flotante de AmaIA */}
+      </footer>      {/* Botón flotante de alAI */}
       <FloatingAIButton />
     </div>
   );

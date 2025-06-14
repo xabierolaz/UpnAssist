@@ -3,7 +3,7 @@ export interface Application {
   id: string;
   name: string;
   description: string;
-  icon: any; // Heroicon component
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; // Heroicon component
   category: AppCategory;
   color: string;
   isActive: boolean;
@@ -23,6 +23,6 @@ export interface AppCategoryInfo {
   id: AppCategory;
   name: string;
   description: string;
-  icon: any;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   color: string;
 }

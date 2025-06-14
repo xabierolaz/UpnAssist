@@ -82,12 +82,8 @@ const PlagiarismDetector: React.FC = () => {
               <FolderIcon className="h-12 w-12 mx-auto text-gray-400" />
               <p className="mt-2 text-sm text-gray-500">
                 Seleccione la carpeta con las entregas a analizar
-              </p>              <input
-                type="file"
-                // @ts-ignore - webkitdirectory no está en los tipos de TypeScript pero es compatible con navegadores
-                webkitdirectory="true"
-                // @ts-ignore - directory no está en los tipos de TypeScript pero es compatible con navegadores
-                directory=""
+              </p>              <input                type="file"
+                {...({ webkitdirectory: "true", directory: "" } as Record<string, string>)}
                 ref={directoryInputRef}
                 onChange={handleDirectoryChange}
                 className="hidden"

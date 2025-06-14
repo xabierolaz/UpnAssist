@@ -135,9 +135,7 @@ export class MultiRoomChatService {
 
     this.socket.on('room-users', (data) => {
       const roomId = data.roomId;
-      if (!this.activeRooms.has(roomId)) return;
-
-      const users = data.users.map((user: any) => ({
+      if (!this.activeRooms.has(roomId)) return;      const users = data.users.map((user: { userId: string; userName: string; joinedAt?: string; device?: string }) => ({
         id: user.userId,
         name: user.userName,
         joinedAt: new Date(user.joinedAt || new Date()),
@@ -294,9 +292,8 @@ export class MultiRoomChatService {
     }
   }
 
-  private detectDeviceType(): string {
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-    return /android|iPad|iPhone|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) 
+  private detectDeviceType(): string {    const userAgent = navigator.userAgent || navigator.vendor || (window as { opera?: string }).opera || '';
+    return /android|iPad|iPhone|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
       ? 'mobile' 
       : 'desktop';
   }

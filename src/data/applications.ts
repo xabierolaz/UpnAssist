@@ -118,7 +118,7 @@ export const applications: Application[] = [
     badge: 3
   },  {
     id: 'ai-assistant',
-    name: 'AmaIA',
+    name: 'alAI',
     description: 'Asistente inteligente sobre UpnAssist (Botón flotante)',
     icon: SparklesIcon,
     category: 'comunicacion',

@@ -39,13 +39,12 @@ const Chat: React.FC = () => {  const {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, selectedRoom?.subject.roomId]);
-
   // Conectar al chat si hay nombre de usuario
   useEffect(() => {
     if (userName && !isConnected && !isConnecting) {
       connect(userName);
     }
-  }, [userName, isConnected, isConnecting]);
+  }, [userName, isConnected, isConnecting, connect]);
 
   // Cuando se selecciona una sala
   const handleRoomSelect = async (room: SubjectRoom) => {

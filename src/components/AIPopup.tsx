@@ -1,5 +1,5 @@
 import React from 'react';
-import { XMarkIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import AIChat from './AIChat';
 
 interface AIPopupProps {
@@ -22,8 +22,12 @@ const AIPopup: React.FC<AIPopupProps> = ({ isOpen, onClose }) => {
       <div className="fixed right-4 top-4 bottom-4 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">          <div className="flex items-center">
-            <SparklesIcon className="h-6 w-6 mr-2" />
-            <h3 className="text-lg font-semibold">AmaIA</h3>
+            <img 
+              src="/assets/alai-avatar.svg" 
+              alt="alAI Avatar" 
+              className="h-6 w-6 mr-2 rounded-full"
+            />
+            <h3 className="text-lg font-semibold">alAI</h3>
           </div>
           <button
             onClick={onClose}

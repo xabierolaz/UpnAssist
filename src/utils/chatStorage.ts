@@ -46,8 +46,7 @@ export function getMessagesFromLocalStorage(): Message[] {
     if (!storedMessages) return [];
     
     // Convertimos de nuevo las fechas a objetos Date
-    const parsedMessages = JSON.parse(storedMessages);
-    return parsedMessages.map((msg: any) => ({
+    const parsedMessages = JSON.parse(storedMessages);    return parsedMessages.map((msg: { timestamp: string; [key: string]: unknown }) => ({
       ...msg,
       timestamp: new Date(msg.timestamp)
     }));

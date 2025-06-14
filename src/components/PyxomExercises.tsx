@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   CheckCircleIcon, 
   AcademicCapIcon,
@@ -42,12 +42,17 @@ const PyxomExercises: React.FC<PyxomExercisesProps> = ({ onBack }) => {
   const [currentExercise, setCurrentExercise] = useState<number>(0);
   const [userCode, setUserCode] = useState<string>('');
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [results, setResults] = useState<any>(null);
-  const [showReview, setShowReview] = useState<boolean>(false);
-  const [completedExercises, setCompletedExercises] = useState<Set<string>>(new Set());
+  const [results, setResults] = useState<{
+    success: boolean;
+    output: string;
+    tests_passed: number;
+    total_tests: number;
+    errors: string[];
+  } | null>(null);
+  const [showReview, setShowReview] = useState<boolean>(false);  const [completedExercises, setCompletedExercises] = useState<Set<string>>(new Set());
 
   // Define 14 comprehensive Python learning modules
-  const modules: ExerciseModule[] = [
+  const modules: ExerciseModule[] = useMemo(() => [
     {
       id: 'basics',
       title: 'Python Basics',
@@ -366,18 +371,17 @@ const PyxomExercises: React.FC<PyxomExercisesProps> = ({ onBack }) => {
             { input: '', expected: '[11, 12, 22, 25, 34, 64, 90]', description: 'Should sort numbers' }
           ],
           hints: ['Compare adjacent elements', 'Swap if in wrong order'],
-          category: 'algorithms'
-        }
+          category: 'algorithms'        }
       ]
     }
-  ];
+  ], []);
 
   useEffect(() => {
     // Initialize user code with current exercise template
     if (modules[currentModule]?.exercises[currentExercise]) {
       setUserCode(modules[currentModule].exercises[currentExercise].template);
     }
-  }, [currentModule, currentExercise]);
+  }, [currentModule, currentExercise, modules]);
 
   const handleRunCode = async () => {
     setIsRunning(true);
@@ -398,8 +402,7 @@ const PyxomExercises: React.FC<PyxomExercisesProps> = ({ onBack }) => {
       
       if (mockResults.tests_passed === mockResults.total_tests) {
         setCompletedExercises(prev => new Set([...prev, currentEx.id]));
-      }
-    } catch (error) {
+      }    } catch {
       setResults({
         success: false,
         output: '',

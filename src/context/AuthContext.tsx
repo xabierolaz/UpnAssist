@@ -22,7 +22,8 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Cambiado a true para saltarse la pantalla de login
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const login = () => {
     setIsAuthenticated(true);

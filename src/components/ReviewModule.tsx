@@ -392,11 +392,9 @@ const ReviewModule: React.FC<ReviewModuleProps> = ({ modules, completedExercises
             </div>
 
             <div className="bg-blue-900/20 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-400 mb-2">📊 Your Strength</h4>
-              <p className="text-blue-200 text-sm">
+              <h4 className="font-semibold text-blue-400 mb-2">📊 Your Strength</h4>              <p className="text-blue-200 text-sm">
                 {Object.entries(stats.byDifficulty)
-                  .sort((a, b) => (b[1].completed / Math.max(b[1].total, 1)) - (a[1].completed / Math.max(a[1].total, 1)))
-                  [0][0]} exercises - Keep building on this foundation!
+                  .sort((a, b) => (b[1].completed / Math.max(b[1].total, 1)) - (a[1].completed / Math.max(a[1].total, 1)))[0][0]} exercises - Keep building on this foundation!
               </p>
             </div>
 

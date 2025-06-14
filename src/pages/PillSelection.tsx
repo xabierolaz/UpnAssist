@@ -29,8 +29,7 @@ const PillSelection: React.FC = () => {
         // Navigate to UpnAssist with integrated PyXom functionality
         navigate('/upnassist');
       }, 2500);
-      
-    } catch (error) {
+        } catch {
       // Fallback: direct navigation
       navigate('/upnassist');
     }

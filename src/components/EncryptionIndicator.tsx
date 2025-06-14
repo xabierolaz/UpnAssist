@@ -13,7 +13,6 @@ export interface EncryptionIndicatorProps {
  */
 const EncryptionIndicator: React.FC<EncryptionIndicatorProps> = ({ 
   isEnabled,
-  timestamp: _timestamp, // Mark as unused since we don't display time info in this component
   count,
   onClick
 }) => {

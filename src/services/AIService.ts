@@ -235,8 +235,7 @@ Asistente: `;
         timestamp: new Date()
       });
 
-      return response;
-    } catch (ollamaError) {
+      return response;    } catch {
       try {
         // Fallback a OpenRouter (online, límites generosos)
         const response = await this.queryOpenRouter(message);
@@ -248,7 +247,7 @@ Asistente: `;
         });
 
         return response;
-      } catch (openRouterError) {
+      } catch {
         // Último recurso: respuestas predefinidas
         const response = this.getFallbackResponse(message);
         

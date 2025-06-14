@@ -56,10 +56,9 @@ const AIChat: React.FC = () => {
     setServices(availableServices);
   };
 
-  const addWelcomeMessage = () => {
-    const welcomeMessage: Message = {
+  const addWelcomeMessage = () => {    const welcomeMessage: Message = {
       id: 'welcome',
-      content: `¡Hola! Soy AmaIA, tu asistente IA para UpnAssist. Puedo ayudarte con:
+      content: `¡Hola! Soy alAI, tu asistente IA para UpnAssist. Puedo ayudarte con:
 
 🎓 **Funcionalidades de UpnAssist**
 • Información sobre las 15 aplicaciones disponibles
@@ -110,10 +109,8 @@ const AIChat: React.FC = () => {
         timestamp: new Date(),
         source: response.source,
         model: response.model
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
+      };      setMessages(prev => [...prev, aiMessage]);
+    } catch {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: 'Lo siento, ha ocurrido un error. Inténtalo de nuevo.',
@@ -250,10 +247,13 @@ const AIChat: React.FC = () => {
         <div className="flex-1 flex flex-col">
           {/* Chat header */}
           <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold flex items-center">
-                <SparklesIcon className="h-6 w-6 mr-2" />
-                AmaIA - UpnAssist
+            <div className="flex items-center justify-between">              <h2 className="text-xl font-semibold flex items-center">
+                <img 
+                  src="/assets/alai-avatar.svg" 
+                  alt="alAI Avatar" 
+                  className="h-6 w-6 mr-2 rounded-full bg-white p-1"
+                />
+                alAI - UpnAssist
               </h2>
               <div className="flex items-center space-x-2">
                 <button

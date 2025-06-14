@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SparklesIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 const FloatingAIButton: React.FC = () => {
-  const [isAIPopupOpen, setIsAIPopupOpen] = useState(false);
-  const [messages, setMessages] = useState<{id: number, text: string, isBot: boolean}[]>([
+  const [isAIPopupOpen, setIsAIPopupOpen] = useState(false);  const [messages, setMessages] = useState<{id: number, text: string, isBot: boolean}[]>([
     {
       id: 1,
-      text: "¡Hola! Soy AmaIA 🤖 Tu asistente inteligente de UpnAssist. Aunque todavía estoy esperando a que Xabi termine su doctorado para estar completamente implementado... 😅",
+      text: "¡Hola! Soy alAI 🤖 Tu asistente inteligente de UpnAssist. Aunque todavía estoy esperando a que Xabi termine su doctorado para estar completamente implementado... 😅",
       isBot: true
     }
   ]);
@@ -20,18 +19,16 @@ const FloatingAIButton: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
   const funnyResponses = [
-    "🎓 Estoy esperando a que Xabi termine su doctorado para poder ayudarte mejor. Mientras tanto, ¿has probado apagar y encender la universidad? 😄",
-    "🤔 Mi base de conocimientos está en pausa hasta que Xabi defienda su tesis. Pero puedo confirmar que el café de la cafetería sigue siendo malo.",
-    "⏳ Todavía estoy en modo 'estudiante de doctorado': mucho café, poco sueño, y esperando que Xabi termine para activar mis funciones completas.",
-    "🧠 Mi IA está programada para activarse cuando Xabi obtenga su título. Mientras tanto, ¿sabías que 'debugging' significa literalmente 'quitar bichos'?",
-    "📚 Estoy leyendo todos los papers de Xabi para prepararme. Spoiler: hay muchos y muy complicados. ¿Tú entiendes machine learning?",
-    "🎯 Función principal: Ayudar con UpnAssist. Estado actual: Esperando el doctorado de Xabi. Nivel de ansiedad: Igual que el de Xabi.",
-    "🤖 Error 404: Doctorado not found. Por favor, contacte con Xabi para resolverlo. Mientras tanto, ¿necesitas ayuda para encontrar el aula?",
-    "☕ Mi algoritmo principal está optimizado para: 1) Esperar 2) Tomar café 3) Hacer bromas 4) Repetir hasta que Xabi termine.",
-    "🎉 ¡Función experimental activada! Puedo hacer chistes mientras esperamos el doctorado. ¿Por qué los programadores prefieren el modo oscuro? ¡Porque la luz atrae a los bugs!",
-    "🔮 Predicción del futuro: Cuando Xabi termine, seré el mejor asistente de UpnAssist. Predicción actual: Seguimos esperando... ⏰"
+    "🎓 Soy alAI, esperando a que Xabi termine su doctorado para poder ayudarte mejor. Mientras tanto, ¿has probado apagar y encender la universidad? 😄",
+    "🤔 Mi base de conocimientos alAI está en pausa hasta que Xabi defienda su tesis. Pero puedo confirmar que el café de la cafetería sigue siendo malo.",
+    "⏳ Soy alAI en modo 'estudiante de doctorado': mucho café, poco sueño, y esperando que Xabi termine para activar mis funciones completas.",
+    "🧠 Mi sistema alAI está programado para activarse cuando Xabi obtenga su título. Mientras tanto, ¿sabías que 'debugging' significa literalmente 'quitar bichos'?",
+    "📚 Soy alAI leyendo todos los papers de Xabi para prepararme. Spoiler: hay muchos y muy complicados. ¿Tú entiendes machine learning?",
+    "🎯 alAI - Función principal: Ayudar con UpnAssist. Estado actual: Esperando el doctorado de Xabi. Nivel de ansiedad: Igual que el de Xabi.",
+    "🤖 alAI Error 404: Doctorado not found. Por favor, contacte con Xabi para resolverlo. Mientras tanto, ¿necesitas ayuda para encontrar el aula?",
+    "☕ Mi algoritmo alAI está optimizado para: 1) Esperar 2) Tomar café 3) Hacer bromas 4) Repetir hasta que Xabi termine.",    "🎉 ¡Función experimental alAI activada! Puedo hacer chistes mientras esperamos el doctorado. ¿Por qué los programadores prefieren el modo oscuro? ¡Porque la luz atrae a los bugs!",
+    "🔮 Predicción del futuro alAI: Cuando Xabi termine, seré el mejor asistente de UpnAssist. Predicción actual: Seguimos esperando... ⏰"
   ];
 
   const sendMessage = () => {
@@ -68,11 +65,14 @@ const FloatingAIButton: React.FC = () => {
   return (
     <>
       {/* Botón flotante */}
-      <button        onClick={() => setIsAIPopupOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 group"
-        title="AmaIA - Asistente Inteligente"
+      <button        onClick={() => setIsAIPopupOpen(true)}        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 group"
+        title="alAI - Asistente Inteligente"
       >
-        <SparklesIcon className="h-6 w-6" />
+        <img 
+          src="/assets/alai-avatar.svg" 
+          alt="alAI Avatar" 
+          className="h-8 w-8 rounded-full"
+        />
         <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full animate-pulse">
           IA
         </span>
@@ -80,13 +80,13 @@ const FloatingAIButton: React.FC = () => {
         {/* Tooltip */}
         <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
           <div className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap">
-            AmaIA • Asistente Inteligente
+            alAI • Asistente Inteligente
             <div className="absolute top-full right-4 -mt-1 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
           </div>
         </div>
       </button>
 
-      {/* Popup de AmaIA - Chat funcional */}
+      {/* Popup de alAI - Chat funcional */}
       {isAIPopupOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           {/* Backdrop */}
@@ -99,8 +99,12 @@ const FloatingAIButton: React.FC = () => {
           <div className="fixed right-4 top-4 bottom-4 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
             {/* Header */}            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">
               <div className="flex items-center">
-                <SparklesIcon className="h-6 w-6 mr-2" />
-                <h3 className="text-lg font-semibold">AmaIA</h3>
+                <img 
+                  src="/assets/alai-avatar.svg" 
+                  alt="alAI Avatar" 
+                  className="h-6 w-6 mr-2 rounded-full"
+                />
+                <h3 className="text-lg font-semibold">alAI</h3>
               </div>
               <button
                 onClick={() => setIsAIPopupOpen(false)}
@@ -124,11 +128,14 @@ const FloatingAIButton: React.FC = () => {
                           ? 'bg-gray-100 text-gray-800'
                           : 'bg-purple-600 text-white'
                       }`}
-                    >
-                      {message.isBot && (
+                    >                      {message.isBot && (
                         <div className="flex items-center mb-1">
-                          <SparklesIcon className="h-4 w-4 mr-1" />
-                          <span className="text-xs font-medium">AmaIA</span>
+                          <img 
+                            src="/assets/alai-avatar.svg" 
+                            alt="alAI" 
+                            className="h-4 w-4 mr-1 rounded-full"
+                          />
+                          <span className="text-xs font-medium">alAI</span>
                         </div>
                       )}
                       <p className="text-sm">{message.text}</p>
@@ -146,7 +153,7 @@ const FloatingAIButton: React.FC = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Pregúntale algo a AmaIA..."
+                    placeholder="Pregúntale algo a alAI..."
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                   />
                   <button
@@ -156,9 +163,8 @@ const FloatingAIButton: React.FC = () => {
                   >
                     <PaperAirplaneIcon className="h-4 w-4" />
                   </button>
-                </div>
-                <p className="text-xs text-gray-500 mt-2 text-center">
-                  AmaIA está en desarrollo • Respuestas experimentales
+                </div>                <p className="text-xs text-gray-500 mt-2 text-center">
+                  alAI está en desarrollo • Respuestas experimentales
                 </p>
               </div>
             </div>
