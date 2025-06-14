@@ -141,11 +141,12 @@ El proyecto está **100% listo** para ser desplegado en cualquier servidor web:
 
 ---
 
-## 📞 **Soporte y Contacto**
+## 📞 **Información del Sistema**
 
-**Desarrollador**: Xabier Olaz  
-**Repositorio**: https://github.com/xabierolaz/UpnAssist  
-**Proyecto**: UpnAssist - Sistema Universitario de Gestión Académica
+**Sistema**: UpnAssist - Plataforma para personal PDI universitario  
+**Desarrollador**: Xabier Olaz Moratinos  
+**Propósito**: Facilitar las tareas diarias del profesorado universitario  
+**Repositorio**: https://github.com/xabierolaz/UpnAssist
 
 ---
 

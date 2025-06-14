@@ -208,33 +208,29 @@ const Help: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">
             Soporte y Contacto
           </h2>
-        </div>
-
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <p className="text-yellow-800 mb-3">
-            <strong>Nota Importante:</strong> UpnAssist es un proyecto educativo desarrollado 
-            por estudiantes para estudiantes. No somos un servicio comercial ni oficial de UPNA.
+        </div>        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-blue-800 mb-3">
+            <strong>Información del Sistema:</strong> UpnAssist es un sistema desarrollado 
+            por Xabier Olaz Moratinos para facilitar las tareas diarias del personal PDI de la universidad.
           </p>
           
-          <div className="space-y-2 text-yellow-700">
+          <div className="space-y-2 text-blue-700">
             <p>
-              <strong>Para consultas técnicas:</strong> Revisa la documentación en el repositorio del proyecto
+              <strong>Propósito:</strong> Facilitar la gestión académica y administrativa del profesorado
             </p>
             <p>
-              <strong>Para reportar problemas:</strong> Utiliza el sistema de issues del repositorio
+              <strong>Características:</strong> Sistema local, sin almacenamiento de datos personales, compatible con herramientas estándar
             </p>
             <p>
-              <strong>Código fuente:</strong> Disponible bajo licencia MIT en GitHub
+              <strong>Código fuente:</strong> Disponible en GitHub bajo licencia MIT
             </p>
           </div>
         </div>
-      </div>
-
-      {/* Footer de la página de ayuda */}
+      </div>      {/* Footer de la página de ayuda */}
       <div className="text-center py-6 border-t border-gray-200">
         <p className="text-sm text-gray-500">
-          UpnAssist v1.0 - Herramienta educativa independiente<br />
-          Última actualización: {new Date().toLocaleDateString('es-ES')}
+          UpnAssist v1.0 - Sistema para personal PDI universitario<br />
+          Desarrollado por Xabier Olaz Moratinos | Última actualización: {new Date().toLocaleDateString('es-ES')}
         </p>
       </div>
     </div>

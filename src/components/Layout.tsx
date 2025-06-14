@@ -16,10 +16,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: 'Correo', href: '/email', icon: EnvelopeIcon },
   ];
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50 flex flex-col">      {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-primary-600">UpnAssist</h1>
@@ -52,7 +51,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Mobile navigation */}
       <nav className="md:hidden bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="w-full px-4">
           <div className="flex space-x-1 overflow-x-auto py-2">
             {navigation.map((item) => {
               const isActive = location.pathname === item.href;
@@ -74,18 +73,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
         </div>
       </nav>      {/* Main content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8">
         {children}
-      </main>
-
-      {/* Footer */}
+      </main>      {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-4">
           <div className="text-center text-sm text-gray-500">
-            © 2025 UpnAssist - Portal del Profesorado | Desarrollado por Xabier Olaz Moratinos
+            © 2025 UpnAssist - Sistema desarrollado por Xabier Olaz Moratinos para personal PDI de la universidad con el fin de facilitar el día a día académico
           </div>
         </div>
-      </footer>      {/* Botón flotante de alAI */}
+      </footer>{/* Botón flotante de alAI */}
       <FloatingAIButton />
     </div>
   );

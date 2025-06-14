@@ -181,11 +181,9 @@ const Dashboard: React.FC = () => {
 
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-    const emptyDays = [];
+                       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];    const emptyDays = [];
     for (let i = 0; i < startingDayOfWeek; i++) {
-      emptyDays.push(<div key={`empty-${i}`} className="p-2"></div>);
+      emptyDays.push(<div key={`empty-${i}`} className="p-4"></div>);
     }
 
     const monthDays = [];
@@ -193,59 +191,55 @@ const Dashboard: React.FC = () => {
       const currentDate = new Date(year, month, day);
       const hasClasses = getClassesForDate(currentDate).length > 0;
       const isSelected = isSameDay(currentDate, selectedDate);
-      const isToday = isSameDay(currentDate, new Date());
-
-      monthDays.push(
+      const isToday = isSameDay(currentDate, new Date());      monthDays.push(
         <div
           key={day}
-          className={`p-2 cursor-pointer rounded-lg text-center ${
+          className={`p-4 cursor-pointer rounded-lg text-center transition-all hover:scale-105 ${
             isSelected 
-              ? 'bg-blue-500 text-white' 
+              ? 'bg-blue-500 text-white shadow-lg' 
               : isToday 
-                ? 'bg-blue-100 text-blue-800' 
+                ? 'bg-blue-100 text-blue-800 border-2 border-blue-300' 
                 : hasClasses 
-                  ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                  ? 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-300' 
                   : 'hover:bg-gray-100'
           }`}
           onClick={() => setSelectedDate(currentDate)}
         >
-          <div className="text-sm font-medium">{day}</div>
-          {hasClasses && <div className="w-1 h-1 bg-green-500 rounded-full mx-auto mt-1"></div>}
+          <div className="text-lg font-medium">{day}</div>
+          {hasClasses && <div className="w-2 h-2 bg-green-500 rounded-full mx-auto mt-2"></div>}
         </div>
       );
-    }
-
-    return (
-      <div className="bg-white rounded-lg shadow-sm p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">
+    }    return (
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-semibold text-gray-900">
             {monthNames[month]} {year}
           </h3>
           <div className="flex space-x-2">
             <button
               onClick={() => navigateMonth(-1)}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-3 hover:bg-gray-100 rounded-lg"
             >
-              <ChevronLeftIcon className="h-5 w-5 text-gray-600" />
+              <ChevronLeftIcon className="h-6 w-6 text-gray-600" />
             </button>
             <button
               onClick={() => navigateMonth(1)}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-3 hover:bg-gray-100 rounded-lg"
             >
-              <ChevronRightIcon className="h-5 w-5 text-gray-600" />
+              <ChevronRightIcon className="h-6 w-6 text-gray-600" />
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 mb-2">
+        <div className="grid grid-cols-7 gap-2 mb-4">
           {dayNames.map(day => (
-            <div key={day} className="p-2 text-center text-sm font-semibold text-gray-500">
+            <div key={day} className="p-3 text-center text-base font-semibold text-gray-500">
               {day}
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-2">
           {emptyDays}
           {monthDays}
         </div>
@@ -347,56 +341,49 @@ const Dashboard: React.FC = () => {
         )}      </div>
 
       {/* Accesos Rápidos */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">🚀 Accesos Rápidos</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="bg-white rounded-lg shadow-sm p-6">        <h3 className="text-xl font-semibold text-gray-900 mb-6">🚀 Accesos Rápidos</h3>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <button
-            onClick={() => setShowAppsModal(true)}
-            className="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg transition-all hover:scale-105"
+            onClick={() => setShowAppsModal(true)}            className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
           >
-            <Squares2X2Icon className="h-8 w-8 text-blue-600 mb-2" />
-            <span className="text-sm font-medium text-blue-800">Aplicaciones</span>
-            <span className="text-xs text-blue-600">& Recursos</span>
+            <Squares2X2Icon className="h-12 w-12 text-blue-600 mb-3" />
+            <span className="text-base font-medium text-blue-800">Aplicaciones</span>
+            <span className="text-sm text-blue-600">& Recursos</span>
           </button>
           
           <button
-            onClick={() => setShowChatModal(true)}
-            className="flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-lg transition-all hover:scale-105"
+            onClick={() => setShowChatModal(true)}            className="flex flex-col items-center p-6 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
           >
-            <ChatBubbleLeftRightIcon className="h-8 w-8 text-green-600 mb-2" />
-            <span className="text-sm font-medium text-green-800">Chat</span>
-            <span className="text-xs text-green-600">Académico</span>
+            <ChatBubbleLeftRightIcon className="h-12 w-12 text-green-600 mb-3" />
+            <span className="text-base font-medium text-green-800">Chat</span>
+            <span className="text-sm text-green-600">Académico</span>
           </button>
           
           <button
-            onClick={() => setShowHelpModal(true)}
-            className="flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg transition-all hover:scale-105"
+            onClick={() => setShowHelpModal(true)}            className="flex flex-col items-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
           >
-            <QuestionMarkCircleIcon className="h-8 w-8 text-purple-600 mb-2" />
-            <span className="text-sm font-medium text-purple-800">Ayuda</span>
-            <span className="text-xs text-purple-600">& Legal</span>
+            <QuestionMarkCircleIcon className="h-12 w-12 text-purple-600 mb-3" />
+            <span className="text-base font-medium text-purple-800">Ayuda</span>
+            <span className="text-sm text-purple-600">& Legal</span>
           </button>
           
           <button
-            onClick={handleGenerateCalendar}
-            className="flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-lg transition-all hover:scale-105"
+            onClick={handleGenerateCalendar}            className="flex flex-col items-center p-6 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
           >
-            <CalendarIcon className="h-8 w-8 text-orange-600 mb-2" />
-            <span className="text-sm font-medium text-orange-800">Calendario</span>
-            <span className="text-xs text-orange-600">Google/Outlook</span>
+            <CalendarIcon className="h-12 w-12 text-orange-600 mb-3" />
+            <span className="text-base font-medium text-orange-800">Calendario</span>
+            <span className="text-sm text-orange-600">Google/Outlook</span>
           </button>
         </div>
-      </div>
-
-      {/* Layout principal */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Calendario */}
-        <div className="lg:col-span-2">
+      </div>      {/* Layout principal - Optimizado para pantallas grandes */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Calendario - Más grande en escritorio */}
+        <div className="lg:col-span-8">
           {renderCalendar()}
         </div>
 
-        {/* Clases del día seleccionado */}
-        <div className="space-y-4">
+        {/* Panel lateral derecho */}
+        <div className="lg:col-span-4 space-y-6">
           <div className="bg-white rounded-lg shadow-sm p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Clases del día
@@ -468,9 +455,8 @@ const Dashboard: React.FC = () => {
 
       {/* Modales para diferentes secciones */}
       {/* Modal de Aplicaciones */}
-      {showAppsModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden">
+      {showAppsModal && (        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-7xl xl:max-w-[90vw] w-full max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-bold text-gray-900">Aplicaciones y Recursos</h2>
               <button
@@ -494,12 +480,10 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
-
-      {/* Modal de Chat */}
+      )}      {/* Modal de Chat */}
       {showChatModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          <div className="bg-white rounded-lg max-w-6xl xl:max-w-[80vw] w-full max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-bold text-gray-900">💬 Chat Académico</h2>
               <button
@@ -514,12 +498,10 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
-
-      {/* Modal de Ayuda */}
+      )}      {/* Modal de Ayuda */}
       {showHelpModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          <div className="bg-white rounded-lg max-w-6xl xl:max-w-[80vw] w-full max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-bold text-gray-900">❓ Centro de Ayuda</h2>
               <button
