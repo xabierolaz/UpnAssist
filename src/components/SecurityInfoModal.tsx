@@ -83,8 +83,7 @@ const SecurityInfoModal: React.FC<SecurityInfoModalProps> = ({ isOpen, onClose, 
                 <li>Los mensajes solo existen mientras el chat está activo</li>
               </ul>
             </div>
-            
-            <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-gray-50 p-4 rounded-lg">
               <div className="flex items-start mb-2">
                 <ClockIcon className="h-5 w-5 text-gray-700 mr-2 mt-0.5" />
                 <h3 className="font-semibold text-gray-900">Almacenamiento Temporal Local</h3>
@@ -97,6 +96,23 @@ const SecurityInfoModal: React.FC<SecurityInfoModalProps> = ({ isOpen, onClose, 
                 <li>Solo se mantienen los últimos 100 mensajes</li>
                 <li>Se eliminan automáticamente después de 7 días</li>
                 <li>Puedes borrar manualmente el historial en cualquier momento</li>
+              </ul>
+            </div>
+
+            <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+              <div className="flex items-start mb-2">
+                <ShieldCheckIcon className="h-5 w-5 text-green-600 mr-2 mt-0.5" />
+                <h3 className="font-semibold text-green-800">Privacidad del Email Institucional</h3>
+              </div>
+              <p className="text-green-700 mb-2">
+                Tu email institucional se maneja con total privacidad:
+              </p>
+              <ul className="list-disc pl-5 text-green-700 space-y-1">
+                <li>Solo se almacena en la caché local de tu dispositivo</li>
+                <li>Nunca se envía a servidores externos</li>
+                <li>Se usa únicamente para extraer tu nombre de usuario</li>
+                <li>Debes introducirlo una vez por cada dispositivo nuevo</li>
+                <li>Los emails de UPNA son públicos en el directorio universitario</li>
               </ul>
             </div>
             
