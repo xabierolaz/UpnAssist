@@ -10,9 +10,16 @@ import {
   LinkIcon,
   ArrowDownTrayIcon,
   ClipboardDocumentIcon,
-  XMarkIcon
+  XMarkIcon,
+  ChatBubbleLeftRightIcon,
+  Squares2X2Icon,
+  QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline';
 import { calendarGeneratorService, type CalendarSyncStatus } from '../services/CalendarGeneratorService';
+import ApplicationLauncher from './ApplicationLauncher';
+import Resources from './Resources';
+import Chat from './Chat';
+import Help from './Help';
 
 const Dashboard: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -24,6 +31,10 @@ const Dashboard: React.FC = () => {
     calendarUrl: null
   });
   const [showCalendarInstructions, setShowCalendarInstructions] = useState<boolean>(false);
+    // Estados para los modales/overlays
+  const [showAppsModal, setShowAppsModal] = useState<boolean>(false);
+  const [showChatModal, setShowChatModal] = useState<boolean>(false);
+  const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
 
   // Tipos para las clases
   type Subject = 'Programación I' | 'Estructuras de Datos' | 'Bases de Datos' | string;
@@ -333,7 +344,48 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-        )}
+        )}      </div>
+
+      {/* Accesos Rápidos */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">🚀 Accesos Rápidos</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button
+            onClick={() => setShowAppsModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg transition-all hover:scale-105"
+          >
+            <Squares2X2Icon className="h-8 w-8 text-blue-600 mb-2" />
+            <span className="text-sm font-medium text-blue-800">Aplicaciones</span>
+            <span className="text-xs text-blue-600">& Recursos</span>
+          </button>
+          
+          <button
+            onClick={() => setShowChatModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-lg transition-all hover:scale-105"
+          >
+            <ChatBubbleLeftRightIcon className="h-8 w-8 text-green-600 mb-2" />
+            <span className="text-sm font-medium text-green-800">Chat</span>
+            <span className="text-xs text-green-600">Académico</span>
+          </button>
+          
+          <button
+            onClick={() => setShowHelpModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg transition-all hover:scale-105"
+          >
+            <QuestionMarkCircleIcon className="h-8 w-8 text-purple-600 mb-2" />
+            <span className="text-sm font-medium text-purple-800">Ayuda</span>
+            <span className="text-xs text-purple-600">& Legal</span>
+          </button>
+          
+          <button
+            onClick={handleGenerateCalendar}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-lg transition-all hover:scale-105"
+          >
+            <CalendarIcon className="h-8 w-8 text-orange-600 mb-2" />
+            <span className="text-sm font-medium text-orange-800">Calendario</span>
+            <span className="text-xs text-orange-600">Google/Outlook</span>
+          </button>
+        </div>
       </div>
 
       {/* Layout principal */}
@@ -410,10 +462,79 @@ const Dashboard: React.FC = () => {
                 <span className="text-gray-600">Asignaturas:</span>
                 <span className="font-semibold">3</span>
               </div>
+            </div>          </div>
+        </div>
+      </div>
+
+      {/* Modales para diferentes secciones */}
+      {/* Modal de Aplicaciones */}
+      {showAppsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-2xl font-bold text-gray-900">Aplicaciones y Recursos</h2>
+              <button
+                onClick={() => setShowAppsModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">🚀 Aplicaciones</h3>
+                  <ApplicationLauncher />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">📁 Recursos</h3>
+                  <Resources />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Modal de Chat */}
+      {showChatModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-2xl font-bold text-gray-900">💬 Chat Académico</h2>
+              <button
+                onClick={() => setShowChatModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
+              <Chat />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Ayuda */}
+      {showHelpModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h2 className="text-2xl font-bold text-gray-900">❓ Centro de Ayuda</h2>
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <Help />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

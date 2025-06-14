@@ -2,11 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   HomeIcon, 
-  ChatBubbleLeftRightIcon, 
-  EnvelopeIcon,
-  FolderIcon,
-  Squares2X2Icon,
-  QuestionMarkCircleIcon
+  EnvelopeIcon
 } from '@heroicons/react/24/outline';
 import FloatingAIButton from './FloatingAIButton';
 
@@ -17,11 +13,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();  const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
-    { name: 'Aplicaciones', href: '/apps', icon: Squares2X2Icon },
-    { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
     { name: 'Correo', href: '/email', icon: EnvelopeIcon },
-    { name: 'Recursos', href: '/resources', icon: FolderIcon },
-    { name: 'Ayuda', href: '/help', icon: QuestionMarkCircleIcon },
   ];
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
