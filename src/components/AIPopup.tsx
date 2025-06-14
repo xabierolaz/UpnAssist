@@ -21,11 +21,10 @@ const AIPopup: React.FC<AIPopupProps> = ({ isOpen, onClose }) => {
       {/* Popup */}
       <div className="fixed right-4 top-4 bottom-4 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">          <div className="flex items-center">
-            <img 
-              src="/assets/alai-avatar.svg" 
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">          <div className="flex items-center">            <img 
+              src="/assets/alai.png" 
               alt="alAI Avatar" 
-              className="h-6 w-6 mr-2 rounded-full"
+              className="h-6 w-6 mr-2 rounded-full object-cover border border-white/20"
             />
             <h3 className="text-lg font-semibold">alAI</h3>
           </div>

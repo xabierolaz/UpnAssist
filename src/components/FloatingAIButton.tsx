@@ -67,11 +67,10 @@ const FloatingAIButton: React.FC = () => {
       {/* Botón flotante */}
       <button        onClick={() => setIsAIPopupOpen(true)}        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 group"
         title="alAI - Asistente Inteligente"
-      >
-        <img 
-          src="/assets/alai-avatar.svg" 
+      >        <img 
+          src="/assets/alai.png" 
           alt="alAI Avatar" 
-          className="h-8 w-8 rounded-full"
+          className="h-8 w-8 rounded-full object-cover border border-white/20"
         />
         <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full animate-pulse">
           IA
@@ -98,11 +97,10 @@ const FloatingAIButton: React.FC = () => {
           {/* Popup */}
           <div className="fixed right-4 top-4 bottom-4 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
             {/* Header */}            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">
-              <div className="flex items-center">
-                <img 
-                  src="/assets/alai-avatar.svg" 
+              <div className="flex items-center">                <img 
+                  src="/assets/alai.png" 
                   alt="alAI Avatar" 
-                  className="h-6 w-6 mr-2 rounded-full"
+                  className="h-6 w-6 mr-2 rounded-full object-cover border border-white/20"
                 />
                 <h3 className="text-lg font-semibold">alAI</h3>
               </div>
@@ -129,11 +127,10 @@ const FloatingAIButton: React.FC = () => {
                           : 'bg-purple-600 text-white'
                       }`}
                     >                      {message.isBot && (
-                        <div className="flex items-center mb-1">
-                          <img 
-                            src="/assets/alai-avatar.svg" 
+                        <div className="flex items-center mb-1">                          <img 
+                            src="/assets/alai.png" 
                             alt="alAI" 
-                            className="h-4 w-4 mr-1 rounded-full"
+                            className="h-4 w-4 mr-1 rounded-full object-cover"
                           />
                           <span className="text-xs font-medium">alAI</span>
                         </div>

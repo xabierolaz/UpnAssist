@@ -247,11 +247,10 @@ const AIChat: React.FC = () => {
         <div className="flex-1 flex flex-col">
           {/* Chat header */}
           <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-            <div className="flex items-center justify-between">              <h2 className="text-xl font-semibold flex items-center">
-                <img 
-                  src="/assets/alai-avatar.svg" 
+            <div className="flex items-center justify-between">              <h2 className="text-xl font-semibold flex items-center">                <img 
+                  src="/assets/alai.png" 
                   alt="alAI Avatar" 
-                  className="h-6 w-6 mr-2 rounded-full bg-white p-1"
+                  className="h-6 w-6 mr-2 rounded-full border border-white/20 object-cover"
                 />
                 alAI - UpnAssist
               </h2>
