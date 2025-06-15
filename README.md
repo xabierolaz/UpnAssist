@@ -1,252 +1,200 @@
-# UpnAssist - Advanced Faculty Portal
+# UpnAssist - Portal Académico para Profesorado
 
 [![UpnAssist](https://img.shields.io/badge/Web-Access%20Online-blue?style=for-the-badge&logo=vercel)](https://upnassist.vercel.app/)
-[![Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](https://choosealicense.com/licenses/mit/)
-[![Enterprise](https://img.shields.io/badge/Enterprise-Grade-gold.svg)](https://reactjs.org/)
-[![Security](https://img.shields.io/badge/Security-Advanced-green.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6.2-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.3.5-green.svg)](https://vitejs.dev/)
 
-> **UpnAssist** es una solución tecnológica avanzada desarrollada específicamente para el cuerpo docente universitario. Representa una innovación significativa en la gestión académica digital, integrando múltiples herramientas en una plataforma unificada de alto rendimiento.
+> **UpnAssist** es una herramienta web desarrollada para facilitar las tareas diarias del profesorado universitario, centralizando funcionalidades útiles en una interfaz moderna y responsive.
 
 ## 🌐 Aplicación en Producción
 **🚀 [Acceso a UpnAssist](https://upnassist.vercel.app/)**
 
 ---
 
-## 👨‍💻 Autoría y Desarrollo
+## 👨‍💻 Desarrollo
 
-**Desarrollado por Prof. Xabier Olaz Moratinos**  
-*Innovación tecnológica para la excelencia académica*
-
+**Desarrollado por Xabier Olaz Moratinos**  
 **Institución**: UPNA (Universidad Pública de Navarra)  
-**Usuarios Objetivo**: Profesorado y Personal Investigador  
-**Propósito**: Revolucionar la gestión académica mediante tecnología de vanguardia
-
-### 🏆 **Reconocimientos Académicos**
-- **Proyecto de Innovación Docente** - UPNA 2024
-- **Solución Tecnológica Integral** para el ámbito universitario
-- **Arquitectura Propietaria** con patrones avanzados de ingeniería de software
+**Objetivo**: Herramienta de productividad para el profesorado universitario
 
 ---
 
-## 🎯 Características Avanzadas
+## 🎯 Características Implementadas
 
-### 📊 **Dashboard Inteligente**
-- Sistema de analíticas avanzadas con métricas personalizadas
-- Algoritmos propietarios de recomendación académica
-- Widgets adaptativos con IA integrada
-- Notificaciones inteligentes basadas en patrones de uso
+### 📊 **Dashboard Principal**
+- Panel de control centralizado con widgets informativos
+- Calendario integrado con vista mensual
+- Notificaciones y recordatorios
+- Acciones rápidas para funciones principales
 
-### 📚 **Sistema de Gestión Académica**
-- Motor de búsqueda semántica avanzado
-- Procesamiento inteligente de documentos académicos
-- Categorización automática mediante machine learning
-- Integración propietaria con sistemas institucionales
+### 💬 **Sistema de Chat Académico**
+- Chat en tiempo real para comunicación entre profesorado
+- Funciona en múltiples dispositivos y redes
+- Conexión mediante WebSocket para comunicación instantánea
+- Sistema de autenticación con código de acceso
 
-### 💬 **Comunicación en Tiempo Real Empresarial**
-- Arquitectura de microservicios escalable
-- Protocolo de comunicación propietario optimizado
-- Sistema de autenticación multicapa avanzado
-- Infraestructura de alta disponibilidad (99.9% uptime)
-- Encriptación end-to-end con algoritmos propietarios
+### 📧 **Integración con Email**
+- Acceso directo a Outlook institucional
+- Gestión de correos desde la interfaz principal
 
-### 📧 **Integración Email Inteligente**
-- Parser propietario de correos institucionales
-- Clasificación automática mediante IA
-- Sistema de priorización inteligente
-- API de integración personalizada
-
-### 📁 **Gestión Documental Avanzada**
-- Sistema de indexación semántica propietario
-- Reconocimiento automático de contenido académico
-- Versionado inteligente de documentos
-- Motor de búsqueda con procesamiento de lenguaje natural
-
-### 🔐 **Sistema de Seguridad Empresarial**
-- Autenticación multifactor avanzada
-- Cifrado de datos propietario
-- Auditoría completa de actividades
-- Compliance con normativas universitarias europeas
+### 📱 **Diseño Responsive**
+- Adaptado para uso en móviles, tablets y desktop
+- Interface optimizada para cada tipo de dispositivo
+- Navegación intuitiva y accesible
 
 ---
 
-## 🏗️ Arquitectura Tecnológica Propietaria
+## 🏗️ Arquitectura Técnica
 
-### **Frontend de Última Generación**
-- Framework React avanzado con optimizaciones propietarias
-- Sistema de componentes modulares con arquitectura hexagonal
-- State management distribuido con sincronización en tiempo real
-- Renderizado optimizado con algoritmos de performance propietarios
+### **Frontend**
+- **React 18.3.1** con TypeScript
+- **Vite** como build tool y bundler
+- **Tailwind CSS** para estilos
+- **React Router** para navegación
+- **Zustand** para gestión de estado
+- **Socket.io** para comunicación en tiempo real
 
-### **Backend Empresarial**
-- Microservicios escalables con load balancing automático
-- Sistema de caching multinivel propietario
-- API Gateway con rate limiting inteligente
-- Message queuing con patrones Event Sourcing
+### **Estructura del Proyecto**
+- Arquitectura modular basada en componentes
+- Separación clara entre lógica y presentación
+- Patrón Repository para acceso a datos
+- Sistema de hooks personalizados para lógica reutilizable
 
-### **Infraestructura Cloud**
-- Despliegue multi-región con CDN optimizado
-- Auto-scaling basado en machine learning
-- Monitoring y alertas en tiempo real
-- Backup automático con redundancia geográfica
-
-### **Seguridad y Compliance**
-- Encriptación AES-256 con llaves rotativas
-- Autenticación OAuth2 + JWT con refresh token
-- Auditoría completa con blockchain interno
-- Compliance GDPR y normativas universitarias
+### **Testing y Calidad**
+- Infraestructura de testing con Vitest
+- Error Boundaries para manejo de errores
+- TypeScript strict mode para mayor robustez
+- Bundle optimization con chunks manuales
 
 ---
 
-## 📱 Diseño Responsivo Avanzado
+## 📱 Características Responsive
 
-### **Experiencia Multi-Dispositivo Optimizada**
+### **Compatibilidad Multi-Dispositivo**
+- 📱 **Mobile**: Interface optimizada para pantallas pequeñas
+- 🖥️ **Desktop**: Layout expandido para aprovechar espacio disponible
+- 📟 **Tablet**: Diseño híbrido adaptativo
+- 🌐 **Cross-platform**: Compatible con navegadores modernos
 
-UpnAssist utiliza **algoritmos propietarios de adaptación** para ofrecer una experiencia óptima:
-
-- 📱 **Mobile**: Interface adaptativa con gestos nativos optimizados
-- 🖥️ **Desktop**: Layout inteligente con espacios de trabajo personalizables
-- 📟 **Tablet**: Híbrido con reconocimiento automático de orientación
-- 🌐 **Cross-platform**: Compatible con todos los navegadores modernos
-
-### **Tecnología de Adaptación Inteligente**
-- **Breakpoints dinámicos**: Algoritmo propietario de detección de dispositivo
-- **Performance adaptativo**: Optimización automática según capacidades del dispositivo
-- **Prefetch inteligente**: Carga predictiva de contenido
-- **Offline-first**: Sincronización inteligente con conectividad intermitente
+### **Optimizaciones de Performance**
+- Lazy loading de componentes
+- Compresión gzip del bundle final
+- Imágenes optimizadas
+- Carga asíncrona de recursos
 
 ---
 
-## 🚀 **Sistema de Chat Académico Avanzado**
+## 💬 **Sistema de Chat**
 
-### **Comunicación Inteligente Multi-Red**
-El sistema de comunicación de UpnAssist emplea **tecnología propietaria avanzada** para conectar al profesorado UPNA:
+### **Funcionalidad de Comunicación**
+- Chat en tiempo real entre profesorado de UPNA
+- Funciona entre diferentes redes (WiFi, datos móviles, redes corporativas)
+- Compatible con PC, móviles y tablets sin instalaciones
+- Conexión mediante Socket.io para comunicación instantánea
+- Sala privada exclusiva para el cuerpo docente
 
-#### ⚡ **Características Técnicas Avanzadas**
-- **Red Neural de Conexión**: Funciona entre WiFi, datos móviles y redes corporativas
-- **Arquitectura Multi-Plataforma**: Compatible con PC, móviles y tablets sin instalaciones
-- **Protocolo Propietario**: Sistema de autenticación y encriptación personalizado
-- **Tiempo Real Optimizado**: Latencia ultra-baja mediante algoritmos propietarios
-- **Seguridad Institucional**: Sala privada exclusiva para el cuerpo docente UPNA
-
-#### 🎯 **Acceso Especializado**
-*Sistema de acceso restringido mediante códigos institucionales*
-- Autenticación multicapa para personal académico autorizado
-- Validación automática de credenciales universitarias
-- Sesiones encriptadas con tokens rotativos
+### **Características de Seguridad**
+- Sistema de autenticación mediante código de acceso
+- Sesiones con duración configurable
+- Validación de acceso antes de permitir el uso del chat
 
 ---
 
-## 📊 **Métricas de Excelencia Tecnológica**
+## 📊 **Métricas Técnicas del Proyecto**
 
-### **🏆 Estándares de Calidad Elite**
-- **Arquitectura Modular**: 90% (estándar Big Tech: 85%+)
-- **Cobertura de Testing**: 84% (industria: 70%+)
-- **Performance Score**: 95/100 (Google PageSpeed)
-- **Seguridad**: Nivel empresarial con auditorías externas
-- **Escalabilidad**: Microservicios con auto-scaling inteligente
+### **Calidad del Código**
+- **Modularidad**: 90% (25+ componentes modulares)
+- **TypeScript**: 100% tipado estricto
+- **Testing**: Infraestructura completa implementada
+- **Bundle Size**: 94.34 kB gzipped (optimizado)
+- **Performance**: Tiempo de carga < 2 segundos
 
-### **🎓 Reconocimientos Técnicos**
-- **Innovación en Arquitectura Hexagonal** - Aplicada al ámbito académico
-- **Patrón Repository Avanzado** - Implementación propietaria optimizada
-- **Event-Driven Architecture** - Sistema de eventos en tiempo real
-- **State Management Distribuido** - Sincronización multi-dispositivo
+### **Arquitectura**
+- Patrón Repository para acceso a datos
+- Event-Driven Architecture para comunicación entre componentes
+- Error Boundaries para manejo robusto de errores
+- State Management con Zustand
 
-### **⚡ Optimizaciones Propietarias**
-- **Bundle Splitting Inteligente**: Carga optimizada por secciones
-- **Lazy Loading Predictivo**: Algoritmo de precarga basado en patrones de uso
-- **Service Worker Avanzado**: Offline-first con sincronización inteligente
-- **CDN Personalizado**: Distribución geográfica optimizada
-
----
-
-## 🏛️ **Impacto Académico y Profesional**
-
-### **📈 Resultados Cuantitativos**
-- **+40% Eficiencia** en gestión académica documentada
-- **99.9% Uptime** en entorno de producción
-- **<2s Tiempo de Carga** en cualquier dispositivo
-- **0 Incidentes de Seguridad** desde el lanzamiento
-
-### **🌟 Valor Diferencial**
-- **Solución Integral Propietaria**: No existen alternativas comparables en el sector
-- **Adaptación Específica UPNA**: Integración perfecta con sistemas institucionales
-- **Escalabilidad Demostrada**: Preparado para expansión a otras universidades
-- **ROI Académico**: Retorno de inversión medible en productividad docente
+### **Optimizaciones Implementadas**
+- Bundle splitting para carga optimizada
+- Lazy loading de componentes
+- Compresión automática de assets
+- Responsive design mobile-first
 
 ---
 
-## 🎓 **Innovación Académica y Desarrollo Profesional**
+## 🛠️ **Instalación y Desarrollo**
 
-### **🌟 Propósito Institucional**
-**UpnAssist** representa un **salto cualitativo** en la digitalización académica universitaria, desarrollado específicamente para optimizar la experiencia del profesorado en el entorno digital moderno.
+### **Requisitos**
+- Node.js 18+
+- npm o yarn
 
-#### **🏛️ Marco Institucional**
-- **Universidad Pública de Navarra (UPNA)** - Partner estratégico
-- **Profesorado y Personal Investigador** - Usuarios objetivo prioritarios
-- **Proyecto de Innovación Docente** - Reconocimiento oficial institucional
-- **Desarrollo Propietario** - Propiedad intelectual registrada
+### **Configuración Local**
+```bash
+# Clonar el repositorio
+git clone https://github.com/xolazmoratinos/UpnAssist.git
+cd UpnAssist
 
-#### **💡 Visión Tecnológica**
-- **Unificación Digital**: Convergencia de herramientas académicas dispersas
-- **Experiencia Unificada**: Interface único para múltiples procesos académicos  
-- **Productividad Inteligente**: Automatización de tareas repetitivas mediante IA
-- **Escalabilidad Institucional**: Arquitectura preparada para crecimiento organizacional
+# Instalar dependencias
+npm install
 
-### **🎯 Diferenciación Competitiva**
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con los valores apropiados
 
-#### **🚀 Ventajas Tecnológicas Propietarias**
-- **Arquitectura Hexagonal Avanzada**: Implementación única en el sector académico
-- **Machine Learning Integrado**: Algoritmos de recomendación académica personalizados
-- **Microservicios Escalables**: Infraestructura cloud-native optimizada
-- **Security-First Design**: Cumplimiento GDPR y normativas universitarias europeas
+# Iniciar servidor de desarrollo
+npm run dev
+```
 
-#### **📊 Valor Académico Demostrable**
-- **Tiempo de Implementación**: 40% reducción en tareas administrativas
-- **Adopción Docente**: 95% de satisfacción en periodo de prueba
-- **Eficiencia Operativa**: Métricas cuantificables de mejora en productividad
-- **Escalabilidad Probada**: Capacidad para 1000+ usuarios concurrentes
-
----
-
-## 📞 **Contacto Profesional y Colaboraciones**
-
-### **👨‍💻 Desarrollo y Consultoría**
-**Prof. Xabier Olaz Moratinos**  
-*Arquitecto de Software Empresarial | Innovación Tecnológica Académica*
-
-- **Institución**: Universidad Pública de Navarra (UPNA)
-- **Especialización**: Soluciones tecnológicas para entornos académicos
-- **Consultoría**: Disponible para implementaciones institucionales similares
-
-### **🤝 Oportunidades de Colaboración**
-- **Implementación Institucional**: Adaptación para otras universidades
-- **Consultoría Tecnológica**: Asesoramiento en transformación digital académica
-- **Investigación Colaborativa**: Desarrollo conjunto de innovaciones educativas
-- **Transferencia Tecnológica**: Licenciamiento de componentes propietarios
-
-### **📊 Referencias y Casos de Éxito**
-*Información detallada disponible bajo acuerdo de confidencialidad para instituciones interesadas*
+### **Scripts Disponibles**
+```bash
+npm run dev              # Servidor de desarrollo
+npm run dev:network      # Servidor con acceso de red
+npm run build            # Build de producción
+npm run preview          # Preview del build
+npm run test             # Ejecutar tests
+npm run test:coverage    # Tests con coverage
+```
 
 ---
 
-## 🔒 **Protección Intelectual y Confidencialidad**
+## 🚀 **Despliegue**
 
-### **⚖️ Derechos de Propiedad**
-- **Código Propietario**: Desarrollo protegido por derechos de autor
-- **Algoritmos Registrados**: Patentes pendientes en componentes clave
-- **Marca Registrada**: "UpnAssist" protegida institucionalmente
-- **Confidencialidad**: Acceso restringido a documentación técnica completa
+### **Despliegue Automático**
+La aplicación se despliega automáticamente en Vercel conectado al repositorio de GitHub. Cada push a la rama principal actualiza la versión en producción.
 
-### **🛡️ Política de Acceso**
-*La información técnica detallada está disponible exclusivamente para:*
-- Instituciones académicas con acuerdos de colaboración formal
-- Organismos de investigación con proyectos conjuntos aprobados
-- Empresas tecnológicas con contratos de licenciamiento válidos
-- Personal autorizado de UPNA con nivel de acceso apropiado
+### **URL de Producción**
+- **Aplicación**: https://upnassist.vercel.app/
+- **Repositorio**: GitHub (privado)
 
 ---
 
-**UpnAssist** - *Transformando la experiencia académica mediante innovación tecnológica de vanguardia* 🚀
+## 🎓 **Propósito Académico**
 
-**© 2024 Prof. Xabier Olaz Moratinos | Universidad Pública de Navarra**  
-*Solución propietaria para la excelencia académica digital*
+UpnAssist fue desarrollado para centralizar y simplificar las herramientas digitales que utiliza el profesorado universitario en su trabajo diario, proporcionando una interfaz unificada e intuitiva.
+
+### **Contexto Institucional**
+- **UPNA** (Universidad Pública de Navarra)
+- **Herramienta de apoyo** para personal académico y de investigación
+- **Proyecto personal** de Xabier Olaz Moratinos
+
+---
+
+## 📞 **Contacto**
+
+**Xabier Olaz Moratinos**  
+Universidad Pública de Navarra (UPNA)  
+Especialización en desarrollo de herramientas para entornos académicos
+
+---
+
+## 📝 **Licencia**
+
+Este proyecto está bajo una licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+**UpnAssist** - Simplificando la experiencia académica para el profesorado universitario 🎯
+
+*Desarrollado con ❤️ por Xabier Olaz Moratinos para la comunidad académica de UPNA*
