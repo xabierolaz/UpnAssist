@@ -10,7 +10,6 @@ const PasswordLogin: React.FC<PasswordLoginProps> = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -18,10 +17,11 @@ const PasswordLogin: React.FC<PasswordLoginProps> = ({ onLogin }) => {
 
     // Simular delay de autenticación
     setTimeout(() => {
-      if (password === 'cuda2020') {
+      // Clave universal para chat: 2580
+      if (password === '2580') {
         onLogin();
       } else {
-        setError('Contraseña incorrecta');
+        setError('Código de acceso incorrecto');
         setPassword('');
       }
       setIsLoading(false);
