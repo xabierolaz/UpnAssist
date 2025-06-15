@@ -410,9 +410,8 @@ const Dashboard: React.FC = () => {
                   <div className="flex items-center text-emerald-800">
                     <CheckCircleIcon className="h-5 w-5 mr-2" />
                     <div>
-                      <div className="text-sm font-semibold">Calendario Sincronizado</div>
-                      <div className="text-xs">
-                        {calendarStatus.eventsCount} eventos | {calendarStatus.lastGenerated?.toLocaleDateString('es-ES')}
+                      <div className="text-sm font-semibold">Calendario Sincronizado</div>                      <div className="text-xs">
+                        {calendarStatus.eventsCount} eventos | {calendarStatus.lastGenerated ? calendarStatus.lastGenerated.toLocaleDateString('es-ES') : 'Sin fecha'}
                       </div>
                     </div>
                   </div>

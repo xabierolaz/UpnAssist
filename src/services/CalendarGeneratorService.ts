@@ -228,7 +228,6 @@ class CalendarGeneratorService {
     
     return webcalUrl;
   }
-
   /**
    * Obtiene el estado actual del calendario
    */
@@ -237,7 +236,16 @@ class CalendarGeneratorService {
     
     if (savedStatus) {
       const status = JSON.parse(savedStatus);
-      status.lastGenerated = new Date(status.lastGenerated);
+      // Verificar que lastGenerated sea válido antes de convertirlo a Date
+      if (status.lastGenerated) {
+        status.lastGenerated = new Date(status.lastGenerated);
+        // Verificar que la fecha sea válida
+        if (isNaN(status.lastGenerated.getTime())) {
+          status.lastGenerated = null;
+        }
+      } else {
+        status.lastGenerated = null;
+      }
       return status;
     }
 
