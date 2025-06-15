@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import alaiAvatar from '../assets/alai.png';
 
 const FloatingAIButton: React.FC = () => {
   const [isAIPopupOpen, setIsAIPopupOpen] = useState(false);  const [messages, setMessages] = useState<{id: number, text: string, isBot: boolean}[]>([
@@ -68,7 +69,7 @@ const FloatingAIButton: React.FC = () => {
       <button        onClick={() => setIsAIPopupOpen(true)}        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 group"
         title="alAI - Asistente Inteligente"
       >        <img 
-          src="/assets/alai.png" 
+          src={alaiAvatar} 
           alt="alAI Avatar" 
           className="h-8 w-8 rounded-full object-cover border border-white/20"
         />
@@ -98,7 +99,7 @@ const FloatingAIButton: React.FC = () => {
           <div className="fixed right-4 top-4 bottom-4 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
             {/* Header */}            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">
               <div className="flex items-center">                <img 
-                  src="/assets/alai.png" 
+                  src={alaiAvatar} 
                   alt="alAI Avatar" 
                   className="h-6 w-6 mr-2 rounded-full object-cover border border-white/20"
                 />
@@ -128,7 +129,7 @@ const FloatingAIButton: React.FC = () => {
                       }`}
                     >                      {message.isBot && (
                         <div className="flex items-center mb-1">                          <img 
-                            src="/assets/alai.png" 
+                            src={alaiAvatar} 
                             alt="alAI" 
                             className="h-4 w-4 mr-1 rounded-full object-cover"
                           />

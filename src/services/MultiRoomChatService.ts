@@ -38,57 +38,48 @@ export class MultiRoomChatService {
   }
 
   async connect(userName?: string): Promise<boolean> {
-    return new Promise((resolve) => {
+    if (this.isConnected) return true;
+
+    try {
       if (userName) {
         this.userName = userName;
       }
 
-      try {
-        if (this.socket) {
-          this.socket.disconnect();
-        }
+      this.socket = io(this.SERVER_URL, {
+        transports: ['websocket', 'polling'],
+        timeout: 10000,
+        reconnectionAttempts: 3,
+        reconnectionDelay: 1000
+      });
 
-        this.socket = io(this.SERVER_URL, {
-          transports: ['websocket', 'polling'],
-          timeout: 20000,
-          forceNew: true,
-          reconnection: true,
-          reconnectionAttempts: 10,
-          reconnectionDelay: 1000,
-          upgrade: true,
-          rememberUpgrade: true,
-          extraHeaders: {
-            'X-Client-Info': `UpnAssist-${this.detectDeviceType()}-${navigator.platform}`,
-            'X-Client-ID': this.userId
-          },
-          query: {
-            userId: this.userId,
-            userName: this.userName,
-            device: this.detectDeviceType(),
-            timestamp: new Date().getTime()
-          }
-        });
+      return new Promise((resolve) => {
+        const timeout = setTimeout(() => {
+          console.error('❌ Timeout al conectar al servidor');
+          resolve(false);
+        }, 15000);
 
-        this.setupSocketListeners();
-        this.startPingInterval();
-
-        this.socket.on('connect', () => {
+        this.socket!.on('connect', () => {
           console.log('✅ Conectado al servidor de chat');
+          clearTimeout(timeout);
           this.isConnected = true;
           this.onConnectionStatusCallback?.(true);
-
-          // Reconectar a las salas activas
-          this.rejoinActiveRooms();
+          this.setupSocketListeners();
+          this.startPingInterval();
           resolve(true);
         });
 
-      } catch (error) {
-        console.error('Error al conectar:', error);
-        this.isConnected = false;
-        this.onConnectionStatusCallback?.(false);
-        resolve(false);
-      }
-    });
+        this.socket!.on('connect_error', (error) => {
+          console.error('❌ Error de conexión:', error);
+          clearTimeout(timeout);
+          this.isConnected = false;
+          this.onConnectionStatusCallback?.(false);
+          resolve(false);
+        });
+      });
+    } catch (error) {
+      console.error('❌ Error al conectar:', error);
+      return false;
+    }
   }
 
   private setupSocketListeners() {
@@ -98,9 +89,7 @@ export class MultiRoomChatService {
       console.log('❌ Desconectado del chat');
       this.isConnected = false;
       this.onConnectionStatusCallback?.(false);
-    });
-
-    this.socket.on('message', async (data) => {
+    });    this.socket.on('message', async (data: any) => {
       try {
         if (!this.activeRooms.has(data.roomId)) return;
 
@@ -133,9 +122,11 @@ export class MultiRoomChatService {
       }
     });
 
-    this.socket.on('room-users', (data) => {
+    this.socket.on('room-users', (data: any) => {
       const roomId = data.roomId;
-      if (!this.activeRooms.has(roomId)) return;      const users = data.users.map((user: { userId: string; userName: string; joinedAt?: string; device?: string }) => ({
+      if (!this.activeRooms.has(roomId)) return;
+
+      const users = data.users.map((user: { userId: string; userName: string; joinedAt?: string; device?: string }) => ({
         id: user.userId,
         name: user.userName,
         joinedAt: new Date(user.joinedAt || new Date()),
@@ -143,7 +134,7 @@ export class MultiRoomChatService {
       }));
 
       this.onUsersUpdateCallback?.(users, roomId);
-
+      
       // Actualizar contador de participantes para salas de asignaturas
       if (roomId.startsWith('subject-')) {
         const subjectId = roomId.replace('subject-', '');
@@ -185,7 +176,7 @@ export class MultiRoomChatService {
 
       // Actualizar el estado en SubjectService
       subjectService.setRoomJoined(subject.id, true);
-      
+
       const room = subjectService.getSubject(subject.id);
       if (room) {
         this.onRoomJoinedCallback?.({
@@ -232,26 +223,28 @@ export class MultiRoomChatService {
   }
 
   async sendMessage(message: string, roomId: string): Promise<boolean> {
-    if (!this.socket || !this.isConnected || !message.trim()) return false;
+    if (!this.socket || !this.isConnected || !this.activeRooms.has(roomId)) {
+      return false;
+    }
 
     try {
-      const roomInfo = this.activeRooms.get(roomId);
-      if (!roomInfo) return false;
+      const roomInfo = this.activeRooms.get(roomId)!;
+      let messageToSend = message;
+      let encrypted = false;
 
-      // Cifrar el mensaje si es posible
-      let encryptedMessage = message;
-      if (this.encryptionEnabled && roomInfo.encryptionKey) {
-        encryptedMessage = await encryptMessage(message.trim(), roomInfo.encryptionKey);
+      // Cifrar el mensaje si es necesario
+      if (roomInfo.encryptionKey) {
+        messageToSend = await encryptMessage(message, roomInfo.encryptionKey);
+        encrypted = true;
       }
 
       this.socket.emit('send-message', {
-        id: uuidv4(),
         roomId,
+        message: messageToSend,
         userId: this.userId,
         userName: this.userName,
-        message: encryptedMessage,
         timestamp: new Date().toISOString(),
-        encrypted: this.encryptionEnabled && roomInfo.encryptionKey !== null
+        encrypted
       });
 
       return true;
@@ -285,14 +278,8 @@ export class MultiRoomChatService {
     }
   }
 
-  private async rejoinActiveRooms(): Promise<void> {
-    const joinedRooms = subjectService.getJoinedRooms();
-    for (const room of joinedRooms) {
-      await this.joinSubjectRoom(room.subject);
-    }
-  }
-
-  private detectDeviceType(): string {    const userAgent = navigator.userAgent || navigator.vendor || (window as { opera?: string }).opera || '';
+  private detectDeviceType(): string {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as { opera?: string }).opera || '';
     return /android|iPad|iPhone|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
       ? 'mobile' 
       : 'desktop';

@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { Subject, SubjectRoom } from '../types/subject';
-import { subjectService } from '../services/SubjectService';
+import { RepositoryFactory } from '../factories/RepositoryFactory';
+import { EventBus } from '../utils/EventBus';
 import { sampleSubjects } from '../data/sampleSubjects';
+import type { ISubjectRepository } from '../interfaces/ISubjectRepository';
 
 interface ChatRoomsContextType {
   subjects: Subject[];
@@ -35,29 +37,49 @@ export const ChatRoomsProvider: React.FC<ChatRoomsProviderProps> = ({ children }
   const [activeRooms, setActiveRooms] = useState<SubjectRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<SubjectRoom | null>(null);
 
+  // Repositorio desacoplado
+  const subjectRepository: ISubjectRepository = RepositoryFactory.getSubjectRepository();
+  const eventBus = EventBus.getInstance();
+
   // Cargar asignaturas al iniciar
   useEffect(() => {
     loadSubjects();
-  }, []);
+
+    // Escuchar eventos de asignaturas
+    const unsubscribeSubjectAdded = eventBus.on(
+      EventBus.Events.SUBJECT_ADDED, 
+      () => loadSubjects()
+    );
+    
+    const unsubscribeSubjectRemoved = eventBus.on(
+      EventBus.Events.SUBJECT_REMOVED, 
+      () => loadSubjects()
+    );
+
+    return () => {
+      unsubscribeSubjectAdded();
+      unsubscribeSubjectRemoved();
+    };
+  }, [subjectRepository, eventBus]);
 
   const loadSubjects = () => {
-    // Primero intentar cargar desde el servicio
-    let loadedSubjects = subjectService.getAllSubjects();
+    // Primero intentar cargar desde el repositorio
+    let loadedSubjects = subjectRepository.getAllSubjects();
     
     // Si no hay asignaturas, cargar los ejemplos
     if (loadedSubjects.length === 0) {
       sampleSubjects.forEach(subject => {
-        subjectService.addSubject(subject);
+        subjectRepository.addSubject(subject);
       });
-      loadedSubjects = subjectService.getAllSubjects();
+      loadedSubjects = subjectRepository.getAllSubjects();
     }
     
     setSubjects(loadedSubjects);
-    setActiveRooms(subjectService.getJoinedRooms());
+    setActiveRooms(subjectRepository.getJoinedRooms());
   };
 
   const addSubject = (subject: Subject): boolean => {
-    const success = subjectService.addSubject(subject);
+    const success = subjectRepository.addSubject(subject);
     if (success) {
       loadSubjects();
     }
@@ -65,7 +87,7 @@ export const ChatRoomsProvider: React.FC<ChatRoomsProviderProps> = ({ children }
   };
 
   const removeSubject = (subjectId: string): boolean => {
-    const success = subjectService.removeSubject(subjectId);
+    const success = subjectRepository.removeSubject(subjectId);
     if (success) {
       loadSubjects();
       if (selectedRoom?.subject.id === subjectId) {
@@ -76,8 +98,8 @@ export const ChatRoomsProvider: React.FC<ChatRoomsProviderProps> = ({ children }
   };
 
   const joinRoom = (subject: Subject) => {
-    subjectService.setRoomJoined(subject.id, true);
-    const room = subjectService.getJoinedRooms().find(r => r.subject.id === subject.id);
+    subjectRepository.setRoomJoined(subject.id, true);
+    const room = subjectRepository.getJoinedRooms().find((r: SubjectRoom) => r.subject.id === subject.id);
     if (room) {
       setActiveRooms(prev => [...prev, room]);
       setSelectedRoom(room);
@@ -85,7 +107,7 @@ export const ChatRoomsProvider: React.FC<ChatRoomsProviderProps> = ({ children }
   };
 
   const leaveRoom = (subjectId: string) => {
-    subjectService.setRoomJoined(subjectId, false);
+    subjectRepository.setRoomJoined(subjectId, false);
     setActiveRooms(prev => prev.filter(room => room.subject.id !== subjectId));
     if (selectedRoom?.subject.id === subjectId) {
       setSelectedRoom(null);

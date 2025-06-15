@@ -9,7 +9,6 @@ class SubjectService {
   private rooms: Map<string, SubjectRoom> = new Map();
 
   constructor() {
-    // Cargar las asignaturas del almacenamiento local si existen
     this.loadFromLocalStorage();
   }
 
@@ -20,22 +19,27 @@ class SubjectService {
     try {
       const savedSubjects = localStorage.getItem('upn-subjects');
       const savedRooms = localStorage.getItem('upn-subject-rooms');
-        if (savedSubjects) {
-        const parsed = JSON.parse(savedSubjects) as Record<string, Subject>;
-        Object.values(parsed).forEach((subject: Subject) => {
-          this.subjects.set(subject.id, subject);
-        });
+
+      if (savedSubjects) {
+        const subjectsData = JSON.parse(savedSubjects);
+        this.subjects = new Map(Object.entries(subjectsData));
       }
-      
+
       if (savedRooms) {
-        const parsed = JSON.parse(savedRooms) as Record<string, SubjectRoom>;
-        Object.values(parsed).forEach((room: SubjectRoom) => {
-          room.lastActivity = new Date(room.lastActivity); // Convertir string a Date
-          this.rooms.set(room.subject.id, room);
+        const roomsData = JSON.parse(savedRooms);
+        const roomsMap = new Map();
+        
+        Object.entries(roomsData).forEach(([key, value]: [string, any]) => {
+          roomsMap.set(key, {
+            ...value,
+            lastActivity: new Date(value.lastActivity)
+          });
         });
+        
+        this.rooms = roomsMap;
       }
     } catch (error) {
-      console.error('Error al cargar asignaturas:', error);
+      console.error('Error al cargar asignaturas desde localStorage:', error);
     }
   }
 
@@ -47,8 +51,19 @@ class SubjectService {
       localStorage.setItem('upn-subjects', 
         JSON.stringify(Object.fromEntries(this.subjects))
       );
+      
+      const roomsData = Object.fromEntries(
+        Array.from(this.rooms.entries()).map(([key, value]) => [
+          key, 
+          {
+            ...value,
+            lastActivity: value.lastActivity.toISOString()
+          }
+        ])
+      );
+      
       localStorage.setItem('upn-subject-rooms',
-        JSON.stringify(Object.fromEntries(this.rooms))
+        JSON.stringify(roomsData)
       );
     } catch (error) {
       console.error('Error al guardar asignaturas:', error);
@@ -60,23 +75,17 @@ class SubjectService {
    */
   addSubject(subject: Subject): boolean {
     try {
-      // Validar datos
-      if (!subject.id || !subject.code || !subject.name) {
-        throw new Error('Datos de asignatura incompletos');
-      }
-
-      // Crear la sala correspondiente
+      this.subjects.set(subject.id, subject);
+      
+      // Crear sala asociada
       const room: SubjectRoom = {
         subject,
         participantCount: 0,
         lastActivity: new Date(),
         isJoined: false
       };
-
-      // Guardar datos
-      this.subjects.set(subject.id, subject);
-      this.rooms.set(subject.id, room);
       
+      this.rooms.set(subject.id, room);
       this.saveToLocalStorage();
       return true;
     } catch (error) {
@@ -89,7 +98,8 @@ class SubjectService {
    * Obtiene todas las asignaturas
    */
   getAllSubjects(): Subject[] {
-    return Array.from(this.subjects.values());
+    return Array.from(this.subjects.values())
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 
   /**

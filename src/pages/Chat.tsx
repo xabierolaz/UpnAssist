@@ -13,7 +13,8 @@ import {
   UserGroupIcon
 } from '@heroicons/react/24/outline';
 import { useMultiRoomChat } from '../hooks/useMultiRoomChat';
-import { useChatRooms } from '../context/ChatRoomsContext';
+import { useChatStore } from '../stores/chatStore';
+// import { useUserStore } from '../stores/userStore'; // Will be used later
 import type { SubjectRoom } from '../types/subject';
 import type { Message } from '../types/chat';
 import SecurityInfoModal from '../components/SecurityInfoModal';
@@ -37,8 +38,8 @@ const Chat: React.FC = () => {
     sendMessage,
     clearHistory
   } = useMultiRoomChat();
-
-  const { selectedRoom } = useChatRooms();
+  const { selectedRoom } = useChatStore();
+  // const { isAuthenticated, user } = useUserStore(); // Commented out for now
   const [newMessage, setNewMessage] = useState('');
   const [showSecurityInfoModal, setShowSecurityInfoModal] = useState(false);
   const [isUserRegistered, setIsUserRegistered] = useState(false);

@@ -1,13 +1,14 @@
 /**
  * Hook personalizado para gestionar el chat con múltiples salas
+ * Ahora usa repositorios desacoplados y Event Bus para comunicación
  */
-
 import { useState, useEffect, useCallback } from 'react';
-import type { Message, User } from '../types';
+import type { Message, User } from '../types/chat';
 import type { Subject, SubjectRoom } from '../types/subject';
-import { multiRoomChatService } from '../services/MultiRoomChatService';
-import { subjectService } from '../services/SubjectService';
-import { saveMessagesToLocalStorage, getMessagesFromLocalStorage, clearChatHistory } from '../utils/chatStorage';
+import { RepositoryFactory } from '../factories/RepositoryFactory';
+import { EventBus } from '../utils/EventBus';
+import type { IChatRepository } from '../interfaces/IChatRepository';
+import type { ISubjectRepository } from '../interfaces/ISubjectRepository';
 
 interface RoomMessages {
   [roomId: string]: Message[];
@@ -18,6 +19,7 @@ interface RoomUsers {
 }
 
 export const useMultiRoomChat = () => {
+  // Estados
   const [messages, setMessages] = useState<RoomMessages>({});
   const [users, setUsers] = useState<RoomUsers>({});
   const [activeRooms, setActiveRooms] = useState<SubjectRoom[]>([]);
@@ -29,68 +31,63 @@ export const useMultiRoomChat = () => {
     lastCleanup: null as null | { timestamp: Date, count: number }
   });
 
-  // Cargar mensajes del almacenamiento local al inicio
+  // Repositorios desacoplados
+  const chatRepository: IChatRepository = RepositoryFactory.getChatRepository();
+  const subjectRepository: ISubjectRepository = RepositoryFactory.getSubjectRepository();
+  const eventBus = EventBus.getInstance();
+
+  // Configurar listeners del Event Bus
   useEffect(() => {
-    const loadMessages = () => {
-      const savedMessages = getMessagesFromLocalStorage();
-      const messagesByRoom: RoomMessages = {};
-      
-      savedMessages.forEach(message => {
-        const roomId = message.roomId || 'general';
-        if (!messagesByRoom[roomId]) {
-          messagesByRoom[roomId] = [];
-        }
-        messagesByRoom[roomId].push(message);
-      });
+    const unsubscribers: (() => void)[] = [];
 
-      setMessages(messagesByRoom);
-    };
+    // Escuchar mensajes del chat
+    unsubscribers.push(
+      eventBus.on(EventBus.Events.CHAT_MESSAGE_RECEIVED, ({ message, roomId }: { message: Message, roomId: string }) => {
+        setMessages(prev => ({
+          ...prev,
+          [roomId]: [...(prev[roomId] || []), message]
+        }));
+      })
+    );
 
-    loadMessages();
-    setActiveRooms(subjectService.getJoinedRooms());
-  }, []);
+    // Escuchar actualizaciones de usuarios
+    unsubscribers.push(
+      eventBus.on(EventBus.Events.CHAT_USERS_UPDATED, ({ users: roomUsers, roomId }: { users: User[], roomId: string }) => {
+        setUsers(prev => ({
+          ...prev,
+          [roomId]: roomUsers
+        }));
+      })
+    );
 
-  // Configurar los callbacks del servicio de chat
-  useEffect(() => {
-    multiRoomChatService.onMessage((message: Message, roomId: string) => {
-      setMessages(prev => ({
-        ...prev,
-        [roomId]: [...(prev[roomId] || []), message]
-      }));
-    });
+    // Escuchar cambios de conexión
+    unsubscribers.push(
+      eventBus.on(EventBus.Events.CHAT_CONNECTION_CHANGED, ({ status }: { status: boolean }) => {
+        setIsConnected(status);
+        setIsConnecting(false);
+      })
+    );
 
-    multiRoomChatService.onUsersUpdate((roomUsers: User[], roomId: string) => {
-      setUsers(prev => ({
-        ...prev,
-        [roomId]: roomUsers
-      }));
-    });
+    // Escuchar cuando se une a una sala
+    unsubscribers.push(
+      eventBus.on(EventBus.Events.CHAT_ROOM_JOINED, ({ room }: { room: SubjectRoom }) => {
+        setActiveRooms(prev => [...prev, room]);
+      })
+    );
 
-    multiRoomChatService.onConnectionStatus((status: boolean) => {
-      setIsConnected(status);
-      setIsConnecting(false);
-    });
-
-    multiRoomChatService.onRoomJoined((room: SubjectRoom) => {
-      setActiveRooms(prev => [...prev, room]);
-    });
-
-    multiRoomChatService.onRoomLeft((roomId: string) => {
-      setActiveRooms(prev => prev.filter(room => `subject-${room.subject.id}` !== roomId));
-    });
+    // Escuchar cuando se sale de una sala
+    unsubscribers.push(
+      eventBus.on(EventBus.Events.CHAT_ROOM_LEFT, ({ roomId }: { roomId: string }) => {
+        setActiveRooms(prev => prev.filter(room => `subject-${room.subject.id}` !== roomId));
+      })
+    );
 
     return () => {
-      multiRoomChatService.disconnect();
+      // Limpiar todos los listeners
+      unsubscribers.forEach(unsubscriber => unsubscriber());
+      chatRepository.disconnect();
     };
-  }, []);
-
-  // Guardar mensajes en almacenamiento local cuando cambian
-  useEffect(() => {
-    const allMessages = Object.values(messages).flat();
-    if (allMessages.length > 0) {
-      saveMessagesToLocalStorage(allMessages);
-    }
-  }, [messages]);
+  }, [chatRepository, subjectRepository, eventBus]);
 
   const connect = async (name?: string) => {
     if (!isConnected && !isConnecting) {
@@ -100,17 +97,17 @@ export const useMultiRoomChat = () => {
         setUserName(name);
       }
 
-      const success = await multiRoomChatService.connect(name || userName);
+      const success = await chatRepository.connect(name || userName);
       
       if (success) {
-        setUserName(multiRoomChatService.getUserName());
+        setUserName(chatRepository.getUserName());
         setEncryptionStatus(prev => ({
           ...prev,
-          enabled: multiRoomChatService.isEncryptionEnabled()
+          enabled: chatRepository.isEncryptionEnabled()
         }));
         
         // Reconectar a las salas anteriores
-        const previousRooms = subjectService.getJoinedRooms();
+        const previousRooms = subjectRepository.getJoinedRooms();
         for (const room of previousRooms) {
           await joinRoom(room.subject);
         }
@@ -122,25 +119,25 @@ export const useMultiRoomChat = () => {
   };
 
   const disconnect = useCallback(() => {
-    multiRoomChatService.disconnect();
+    chatRepository.disconnect();
     setMessages({});
     setUsers({});
     setActiveRooms([]);
-  }, []);
+  }, [chatRepository]);
 
   const sendMessage = async (message: string, roomId: string): Promise<boolean> => {
     if (!isConnected) return false;
-    return await multiRoomChatService.sendMessage(message, roomId);
+    return await chatRepository.sendMessage(message, roomId);
   };
 
   const joinRoom = async (subject: Subject): Promise<boolean> => {
     if (!isConnected) return false;
-    return await multiRoomChatService.joinSubjectRoom(subject);
+    return await chatRepository.joinSubjectRoom(subject);
   };
 
   const leaveRoom = (subjectId: string): boolean => {
     if (!isConnected) return false;
-    return multiRoomChatService.leaveSubjectRoom(subjectId);
+    return chatRepository.leaveSubjectRoom(subjectId);
   };
 
   const clearHistory = (roomId?: string) => {
@@ -152,10 +149,7 @@ export const useMultiRoomChat = () => {
           return newMessages;
         });
       } else {
-        const clearedOk = clearChatHistory();
-        if (clearedOk) {
-          setMessages({});
-        }
+        setMessages({});
       }
       return true;
     } catch (error) {
@@ -165,8 +159,8 @@ export const useMultiRoomChat = () => {
   };
 
   const getAvailableSubjects = useCallback(() => {
-    return subjectService.getAllSubjects();
-  }, []);
+    return subjectRepository.getAllSubjects();
+  }, [subjectRepository]);
 
   const getRoomUsers = useCallback((roomId: string) => {
     return users[roomId] || [];

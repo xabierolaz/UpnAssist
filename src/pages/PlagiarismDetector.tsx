@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { ArrowPathIcon, DocumentTextIcon, FolderIcon } from '@heroicons/react/24/outline';
-import type { JPlagResult } from '../services/JPlagService';
+// Commented out JPlagService import due to missing module
+// import type { JPlagResult } from '../services/JPlagService';
 
 const PlagiarismDetector: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<JPlagResult | null>(null);
+  // Commented out references to JPlagResult due to missing module
+  // const [results, setResults] = useState<JPlagResult | null>(null);
   const [selectedDirectory, setSelectedDirectory] = useState<string>('');
   const [language, setLanguage] = useState<string>('java');
   const [threshold, setThreshold] = useState<number>(50);
@@ -43,21 +45,21 @@ const PlagiarismDetector: React.FC = () => {
       
       // Simulamos la respuesta para la demo
       setTimeout(() => {
-        const mockResult: JPlagResult = {
-          success: true,
-          averageSimilarity: 35.8,
-          similarities: [
-            { submission1: 'estudiante01', submission2: 'estudiante04', similarity: 95.2 },
-            { submission1: 'estudiante01', submission2: 'estudiante03', similarity: 82.5 },
-            { submission1: 'estudiante03', submission2: 'estudiante08', similarity: 78.1 },
-            { submission1: 'estudiante06', submission2: 'estudiante18', similarity: 65.3 },
-            { submission1: 'estudiante09', submission2: 'estudiante15', similarity: 60.0 },
-            { submission1: 'estudiante02', submission2: 'estudiante07', similarity: 45.2 },
-          ],
-          outputPath: 'd:\\UpnAssist\\plagiarism-report.jplag'
-        };
+        // const mockResult: JPlagResult = {
+        //   success: true,
+        //   averageSimilarity: 35.8,
+        //   similarities: [
+        //     { submission1: 'estudiante01', submission2: 'estudiante04', similarity: 95.2 },
+        //     { submission1: 'estudiante01', submission2: 'estudiante03', similarity: 82.5 },
+        //     { submission1: 'estudiante03', submission2: 'estudiante08', similarity: 78.1 },
+        //     { submission1: 'estudiante06', submission2: 'estudiante18', similarity: 65.3 },
+        //     { submission1: 'estudiante09', submission2: 'estudiante15', similarity: 60.0 },
+        //     { submission1: 'estudiante02', submission2: 'estudiante07', similarity: 45.2 },
+        //   ],
+        //   outputPath: 'd:\\UpnAssist\\plagiarism-report.jplag'
+        // };
         
-        setResults(mockResult);
+        // setResults(mockResult);
         setIsLoading(false);
       }, 2000);
     } catch (error) {
@@ -161,6 +163,7 @@ const PlagiarismDetector: React.FC = () => {
             </div>
           </form>
           
+          {/* Commented out results section due to missing JPlagResult implementation
           {results && (
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-md">
               <h2 className="text-xl font-medium text-blue-800 mb-4">Resultados del análisis</h2>
@@ -176,7 +179,7 @@ const PlagiarismDetector: React.FC = () => {
               
               <h3 className="text-lg font-medium text-blue-700 mb-2">Coincidencias principales:</h3>
               <div className="space-y-2 mb-4">
-                {results.similarities.map((similarity, index) => (
+                {results.similarities.map((similarity: { submission1: string; submission2: string; similarity: number }, index: number) => (
                   <div 
                     key={index} 
                     className="flex justify-between items-center p-2 rounded-md"
@@ -206,7 +209,7 @@ const PlagiarismDetector: React.FC = () => {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

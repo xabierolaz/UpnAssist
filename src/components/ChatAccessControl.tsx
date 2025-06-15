@@ -11,7 +11,6 @@ const ChatAccessControl: React.FC<ChatAccessControlProps> = ({ onAccessGranted, 
   const [showCode, setShowCode] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -19,7 +18,10 @@ const ChatAccessControl: React.FC<ChatAccessControlProps> = ({ onAccessGranted, 
 
     // Simular delay de verificación
     setTimeout(() => {
-      if (accessCode === '2580') {
+      // Obtener código desde variables de entorno
+      const validCode = import.meta.env.VITE_CHAT_ACCESS_CODE || '2580';
+      
+      if (accessCode === validCode) {
         // Guardar acceso autorizado en localStorage
         localStorage.setItem('upn-chat-access-granted', 'true');
         localStorage.setItem('upn-chat-access-timestamp', Date.now().toString());

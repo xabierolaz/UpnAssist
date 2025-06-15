@@ -5,7 +5,7 @@ import {
   LockClosedIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
-import { useChatRooms } from '../context/ChatRoomsContext';
+import { useChatStore } from '../stores/chatStore';
 import type { Subject, SubjectRoom } from '../types/subject';
 
 interface ChatRoomListProps {
@@ -13,7 +13,7 @@ interface ChatRoomListProps {
 }
 
 const ChatRoomList: React.FC<ChatRoomListProps> = ({ onRoomSelect }) => {
-  const { subjects, activeRooms, selectedRoom, joinRoom, leaveRoom } = useChatRooms();
+  const { subjects, activeRooms, selectedRoom, joinRoom, leaveRoom } = useChatStore();
 
   const handleRoomClick = (subject: Subject) => {
     const existingRoom = activeRooms.find(r => r.subject.id === subject.id);

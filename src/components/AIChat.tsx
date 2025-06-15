@@ -8,7 +8,8 @@ import {
   XCircleIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline';
-import { aiService } from '../services/AIService';
+import { AIService } from '../services/AIService';
+import alaiAvatar from '../assets/alai.png';
 import type { AIResponse } from '../services/AIService';
 
 interface Message {
@@ -28,6 +29,9 @@ const AIChat: React.FC = () => {
   const [openRouterKey, setOpenRouterKey] = useState('');
   const [services, setServices] = useState({ ollama: false, openrouter: false });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Correct usage of AIService
+  const aiServiceInstance = new AIService('https://api.example.com');
 
   useEffect(() => {
     // Cargar API key existente
@@ -52,7 +56,7 @@ const AIChat: React.FC = () => {
   };
 
   const checkServices = async () => {
-    const availableServices = await aiService.getAvailableServices();
+    const availableServices = await aiServiceInstance.getAvailableServices();
     setServices(availableServices);
   };
 
@@ -100,7 +104,7 @@ const AIChat: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response: AIResponse = await aiService.sendMessage(newMessage.trim());
+      const response: AIResponse = await aiServiceInstance.sendMessage(newMessage.trim());
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -126,14 +130,14 @@ const AIChat: React.FC = () => {
   };
 
   const handleSaveSettings = () => {
-    aiService.setOpenRouterKey(openRouterKey);
+    aiServiceInstance.setOpenRouterKey(openRouterKey);
     setShowSettings(false);
     checkServices();
   };
 
   const clearChat = () => {
     setMessages([]);
-    aiService.clearContext();
+    aiServiceInstance.clearContext();
     addWelcomeMessage();
   };
 
@@ -248,7 +252,7 @@ const AIChat: React.FC = () => {
           {/* Chat header */}
           <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
             <div className="flex items-center justify-between">              <h2 className="text-xl font-semibold flex items-center">                <img 
-                  src="/assets/alai.png" 
+                  src={alaiAvatar} 
                   alt="alAI Avatar" 
                   className="h-6 w-6 mr-2 rounded-full border border-white/20 object-cover"
                 />

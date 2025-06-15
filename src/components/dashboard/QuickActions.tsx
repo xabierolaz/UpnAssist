@@ -24,19 +24,19 @@ const QuickActions: React.FC<QuickActionsProps> = ({
   const openEmail = () => {
     window.open('https://outlook.office.com', '_blank');
   };
-
   const handleChatClick = () => {
-    // Verificar si ya tiene acceso autorizado (válido por 24 horas)
+    // Verificar si ya tiene acceso autorizado
     const accessGranted = localStorage.getItem('upn-chat-access-granted');
     const accessTimestamp = localStorage.getItem('upn-chat-access-timestamp');
     
     if (accessGranted === 'true' && accessTimestamp) {
       const now = Date.now();
       const grantedAt = parseInt(accessTimestamp);
+      const sessionDuration = parseInt(import.meta.env.VITE_CHAT_SESSION_DURATION_HOURS || '24');
       const hoursElapsed = (now - grantedAt) / (1000 * 60 * 60);
       
-      // Si han pasado menos de 24 horas, permitir acceso directo
-      if (hoursElapsed < 24) {
+      // Si han pasado menos horas que las configuradas, permitir acceso directo
+      if (hoursElapsed < sessionDuration) {
         onOpenChat();
         return;
       } else {
