@@ -478,10 +478,12 @@ const Dashboard: React.FC = () => {
                   <ChevronRightIcon className="h-6 w-6 text-gray-600" />
                 </button>
               </div>
-            </div>            {/* Grid del calendario optimizado para Full HD */}
+            </div>
+
+            {/* Grid del calendario optimizado para Full HD */}
             <div className="grid grid-cols-7 gap-3 mb-4">
               {(() => {
-                const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
                 return dayNames.map(day => (
                   <div key={day} className="p-4 text-center text-base font-semibold text-gray-500 bg-gray-50 rounded-lg">
                     {day}
@@ -491,13 +493,13 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-7 gap-3">
-              {(() => {                const year = currentMonth.getFullYear();
+              {(() => {
+                const year = currentMonth.getFullYear();
                 const month = currentMonth.getMonth();
                 const firstDay = new Date(year, month, 1);
                 const lastDay = new Date(year, month + 1, 0);
                 const daysInMonth = lastDay.getDate();
-                // Ajustar para que lunes sea día 0 (España): domingo = 6, lunes = 0
-                const startingDayOfWeek = (firstDay.getDay() + 6) % 7;
+                const startingDayOfWeek = firstDay.getDay();
 
                 const allDays = [];
 
@@ -683,16 +685,18 @@ const Dashboard: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <CalendarIcon className="h-5 w-5 mr-2 text-indigo-600" />
               Próximas Clases
-            </h3>              <div className="space-y-3">
+            </h3>
+              <div className="space-y-3">
               {weeklySchedule.slice(0, 3).map((classInfo) => {
-                const dayNames = ['', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
                 return (
                   <div key={classInfo.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center">
                       <div className={`w-3 h-3 rounded-full mr-3 ${getSubjectColor(classInfo.subject)}`}></div>
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{classInfo.subject}</div>                        <div className="text-xs text-gray-500">
-                          {dayNames[classInfo.dayOfWeek]} - {classInfo.time}
+                        <div className="text-sm font-medium text-gray-900">{classInfo.subject}</div>
+                        <div className="text-xs text-gray-500">
+                          {dayNames[classInfo.dayOfWeek === 7 ? 0 : classInfo.dayOfWeek]} - {classInfo.time}
                         </div>
                       </div>
                     </div>
