@@ -13,8 +13,7 @@ import {
   XMarkIcon,
   ChatBubbleLeftRightIcon,
   Squares2X2Icon,
-  QuestionMarkCircleIcon,
-  EnvelopeIcon
+  QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline';
 import { calendarGeneratorService, type CalendarSyncStatus } from '../services/CalendarGeneratorService';
 import ApplicationLauncher from './ApplicationLauncher';
@@ -32,8 +31,7 @@ const Dashboard: React.FC = () => {
     calendarUrl: null
   });
   const [showCalendarInstructions, setShowCalendarInstructions] = useState<boolean>(false);
-  
-  // Estados para los modales
+    // Estados para los modales/overlays
   const [showAppsModal, setShowAppsModal] = useState<boolean>(false);
   const [showChatModal, setShowChatModal] = useState<boolean>(false);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
@@ -135,6 +133,7 @@ const Dashboard: React.FC = () => {
       console.error('Error al copiar enlace:', error);
     }
   };
+
   // Función para descargar archivo .ics
   const handleDownloadICS = (url: string) => {
     const a = document.createElement('a');
@@ -143,11 +142,6 @@ const Dashboard: React.FC = () => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  };
-
-  // Función para abrir correo
-  const handleOpenEmail = () => {
-    window.open('https://webmail.unavarra.es/round/', '_blank');
   };
 
   // Cargar estado del calendario al inicializar
@@ -175,22 +169,22 @@ const Dashboard: React.FC = () => {
     return weeklySchedule.filter(cls => cls.dayOfWeek === dayOfWeek);
   };
 
-  const selectedDateClasses = getClassesForDate(selectedDate);  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Layout horizontal principal - Optimizado para pantallas panorámicas */}
-      <div className="flex h-screen">
-        
-        {/* Menú lateral único - Fusión de Herramientas y Accesos Rápidos */}
-        <div className="w-80 bg-white shadow-lg border-r border-gray-200 flex flex-col">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">📊 UPN Dashboard</h2>
+  const selectedDateClasses = getClassesForDate(selectedDate);
+  return (
+    <div className="space-y-6 min-h-screen bg-gray-50">
+      {/* Header del Dashboard - Optimizado para Full HD */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">📊 Dashboard Académico UPN</h2>
             <div className="flex items-center space-x-4 text-sm text-gray-600">
               <span className="flex items-center">
                 <CalendarIcon className="h-4 w-4 mr-1" />
                 {selectedDate.toLocaleDateString('es-ES', { 
-                  weekday: 'short', 
-                  day: 'numeric',
-                  month: 'short'
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
                 })}
               </span>
               <span className="flex items-center">
@@ -199,158 +193,144 @@ const Dashboard: React.FC = () => {
               </span>
             </div>
           </div>
-
-          {/* Menú lateral fusionado */}
-          <div className="flex-1 p-6 space-y-6 overflow-y-auto">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">🚀 Herramientas</h3>
-              <div className="space-y-3">
-                <button
-                  onClick={() => setShowAppsModal(true)}
-                  className="w-full flex items-center p-3 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg transition-all hover:scale-105 text-left"
-                >
-                  <Squares2X2Icon className="h-6 w-6 text-blue-600 mr-3" />
-                  <div>
-                    <div className="text-sm font-medium text-blue-800">Aplicaciones</div>
-                    <div className="text-xs text-blue-600">Herramientas y recursos</div>
-                  </div>
-                </button>
-                
-                <button
-                  onClick={() => setShowChatModal(true)}
-                  className="w-full flex items-center p-3 bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-lg transition-all hover:scale-105 text-left"
-                >
-                  <ChatBubbleLeftRightIcon className="h-6 w-6 text-green-600 mr-3" />
-                  <div>
-                    <div className="text-sm font-medium text-green-800">Chat Académico</div>
-                    <div className="text-xs text-green-600">Comunicación por materias</div>
-                  </div>
-                </button>
-                
-                <button
-                  onClick={() => setShowHelpModal(true)}
-                  className="w-full flex items-center p-3 bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg transition-all hover:scale-105 text-left"
-                >
-                  <QuestionMarkCircleIcon className="h-6 w-6 text-purple-600 mr-3" />
-                  <div>
-                    <div className="text-sm font-medium text-purple-800">Centro de Ayuda</div>
-                    <div className="text-xs text-purple-600">Documentación y soporte</div>
-                  </div>
-                </button>
-                
-                <button
-                  className="w-full flex items-center p-3 bg-gradient-to-r from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 rounded-lg transition-all hover:scale-105 text-left"
-                >
-                  <UserGroupIcon className="h-6 w-6 text-indigo-600 mr-3" />
-                  <div>
-                    <div className="text-sm font-medium text-indigo-800">Estudiantes</div>
-                    <div className="text-xs text-indigo-600">Gestión académica</div>
-                  </div>
-                </button>
-                
-                <button
-                  className="w-full flex items-center p-3 bg-gradient-to-r from-pink-50 to-pink-100 hover:from-pink-100 hover:to-pink-200 rounded-lg transition-all hover:scale-105 text-left"
-                >
-                  <MapPinIcon className="h-6 w-6 text-pink-600 mr-3" />
-                  <div>
-                    <div className="text-sm font-medium text-pink-800">Campus</div>
-                    <div className="text-xs text-pink-600">Ubicaciones</div>
-                  </div>
-                </button>
+          
+          {/* Botones de acción en el header */}
+          <div className="flex items-center space-x-3">
+            {calendarStatus.isGenerated && (
+              <div className="flex items-center text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                <CheckCircleIcon className="h-4 w-4 mr-2" />
+                <span className="hidden md:inline">Calendario sincronizado - </span>
+                {calendarStatus.eventsCount} eventos
               </div>
-            </div>
-
-            {/* Resumen Académico simplificado */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 Resumen</h3>
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-blue-50 p-3 rounded-lg text-center">
-                  <div className="text-xl font-bold text-blue-600">{weeklySchedule.length}</div>
-                  <div className="text-xs text-blue-700">Clases</div>
-                </div>
-                <div className="bg-purple-50 p-3 rounded-lg text-center">
-                  <div className="text-xl font-bold text-purple-600">3</div>
-                  <div className="text-xs text-purple-700">Materias</div>
-                </div>
-              </div>
-              
-              {/* Estado del calendario simplificado */}
-              {calendarStatus.isGenerated && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-                  <div className="flex items-center text-emerald-800">
-                    <CheckCircleIcon className="h-5 w-5 mr-2" />
-                    <div>
-                      <div className="text-sm font-semibold">Calendario Activo</div>
-                      <div className="text-xs">{calendarStatus.eventsCount} eventos</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
+            
+            <button
+              onClick={handleGenerateCalendar}
+              className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+            >
+              <CalendarIcon className="h-5 w-5 mr-2" />
+              <span className="hidden md:inline">Generar </span>Calendario
+            </button>
           </div>
         </div>
 
-        {/* Área principal de contenido */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Instrucciones del calendario flotantes */}
-          {showCalendarInstructions && calendarStatus.calendarUrl && (
-            <div className="mx-6 mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-blue-900">
-                  📅 Calendario UPN Generado
-                </h3>
+        {/* Instrucciones del calendario */}
+        {showCalendarInstructions && calendarStatus.calendarUrl && (
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-blue-900">
+                📅 Calendario UPN Generado
+              </h3>
+              <button
+                onClick={() => setShowCalendarInstructions(false)}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                <XMarkIcon className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="space-y-3">
+              <p className="text-blue-800">
+                Tu calendario académico está listo. Puedes suscribirte o descargarlo:
+              </p>
+              
+              <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() => setShowCalendarInstructions(false)}
-                  className="text-blue-500 hover:text-blue-700"
+                  onClick={() => handleCopyCalendarLink(calendarStatus.calendarUrl!)}
+                  className="flex items-center px-3 py-2 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <ClipboardDocumentIcon className="h-4 w-4 mr-1" />
+                  Copiar Enlace
                 </button>
+                
+                <button
+                  onClick={() => handleDownloadICS(calendarStatus.calendarUrl!)}
+                  className="flex items-center px-3 py-2 bg-green-500 text-white rounded text-sm hover:bg-green-600"
+                >
+                  <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
+                  Descargar .ics
+                </button>
+                
+                <a
+                  href={calendarStatus.calendarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center px-3 py-2 bg-purple-500 text-white rounded text-sm hover:bg-purple-600"
+                >
+                  <LinkIcon className="h-4 w-4 mr-1" />
+                  Abrir Calendario
+                </a>
               </div>
               
-              <div className="space-y-3">
-                <p className="text-blue-800">
-                  Tu calendario académico está listo. Puedes suscribirte o descargarlo:
-                </p>
-                
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => handleCopyCalendarLink(calendarStatus.calendarUrl!)}
-                    className="flex items-center px-3 py-2 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-                  >
-                    <ClipboardDocumentIcon className="h-4 w-4 mr-1" />
-                    Copiar Enlace
-                  </button>
-                  
-                  <button
-                    onClick={() => handleDownloadICS(calendarStatus.calendarUrl!)}
-                    className="flex items-center px-3 py-2 bg-green-500 text-white rounded text-sm hover:bg-green-600"
-                  >
-                    <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
-                    Descargar .ics
-                  </button>
-                  
-                  <a
-                    href={calendarStatus.calendarUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center px-3 py-2 bg-purple-500 text-white rounded text-sm hover:bg-purple-600"
-                  >
-                    <LinkIcon className="h-4 w-4 mr-1" />
-                    Abrir Calendario
-                  </a>
-                </div>
-                
-                <div className="text-sm text-blue-700">
-                  <p><strong>Uso:</strong> Copia el enlace y agrégalo a Google Calendar, Outlook o Apple Calendar como "Suscripción a calendario web"</p>
-                </div>
+              <div className="text-sm text-blue-700">
+                <p><strong>Uso:</strong> Copia el enlace y agrégalo a Google Calendar, Outlook o Apple Calendar como "Suscripción a calendario web"</p>
               </div>
             </div>
-          )}{/* Layout principal - Optimizado para monitores Full HD 16:9 */}
+          </div>
+        )}      </div>      {/* Accesos Rápidos - Optimizado para Full HD */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">🚀 Accesos Rápidos</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <button
+            onClick={() => setShowAppsModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <Squares2X2Icon className="h-10 w-10 text-blue-600 mb-2" />
+            <span className="text-sm font-medium text-blue-800">Aplicaciones</span>
+            <span className="text-xs text-blue-600">& Recursos</span>
+          </button>
+          
+          <button
+            onClick={() => setShowChatModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <ChatBubbleLeftRightIcon className="h-10 w-10 text-green-600 mb-2" />
+            <span className="text-sm font-medium text-green-800">Chat</span>
+            <span className="text-xs text-green-600">Académico</span>
+          </button>
+          
+          <button
+            onClick={() => setShowHelpModal(true)}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <QuestionMarkCircleIcon className="h-10 w-10 text-purple-600 mb-2" />
+            <span className="text-sm font-medium text-purple-800">Ayuda</span>
+            <span className="text-xs text-purple-600">& Legal</span>
+          </button>
+          
+          <button
+            onClick={handleGenerateCalendar}
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <CalendarIcon className="h-10 w-10 text-orange-600 mb-2" />
+            <span className="text-sm font-medium text-orange-800">Calendario</span>
+            <span className="text-xs text-orange-600">Google/Outlook</span>
+          </button>
+          
+          {/* Nuevos accesos rápidos */}
+          <button
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <UserGroupIcon className="h-10 w-10 text-indigo-600 mb-2" />
+            <span className="text-sm font-medium text-indigo-800">Estudiantes</span>
+            <span className="text-xs text-indigo-600">Gestión</span>
+          </button>
+          
+          <button
+            className="flex flex-col items-center p-4 bg-gradient-to-br from-pink-50 to-pink-100 hover:from-pink-100 hover:to-pink-200 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <MapPinIcon className="h-10 w-10 text-pink-600 mb-2" />
+            <span className="text-sm font-medium text-pink-800">Campus</span>
+            <span className="text-xs text-pink-600">Ubicaciones</span>
+          </button>
+        </div>
+      </div>{/* Layout principal - Optimizado para monitores Full HD 16:9 */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Panel Izquierdo - Herramientas y Info Académica */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Accesos Rápidos Verticales */}          <div className="bg-white rounded-lg shadow-sm p-4">
+          {/* Accesos Rápidos Verticales */}
+          <div className="bg-white rounded-lg shadow-sm p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">🚀 Herramientas</h3>
             <div className="space-y-3">
               <button
@@ -361,17 +341,6 @@ const Dashboard: React.FC = () => {
                 <div>
                   <div className="text-sm font-medium text-blue-800">Aplicaciones</div>
                   <div className="text-xs text-blue-600">Herramientas y recursos</div>
-                </div>
-              </button>
-
-              <button
-                onClick={handleOpenEmail}
-                className="w-full flex items-center p-3 bg-gradient-to-r from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 rounded-lg transition-all hover:scale-105 text-left"
-              >
-                <EnvelopeIcon className="h-6 w-6 text-red-600 mr-3" />
-                <div>
-                  <div className="text-sm font-medium text-red-800">Correo</div>
-                  <div className="text-xs text-red-600">Email institucional</div>
                 </div>
               </button>
               

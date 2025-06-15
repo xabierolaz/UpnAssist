@@ -13,8 +13,7 @@ import {
   XMarkIcon,
   ChatBubbleLeftRightIcon,
   Squares2X2Icon,
-  QuestionMarkCircleIcon,
-  EnvelopeIcon
+  QuestionMarkCircleIcon
 } from '@heroicons/react/24/outline';
 import { calendarGeneratorService, type CalendarSyncStatus } from '../services/CalendarGeneratorService';
 import ApplicationLauncher from './ApplicationLauncher';
@@ -135,6 +134,7 @@ const Dashboard: React.FC = () => {
       console.error('Error al copiar enlace:', error);
     }
   };
+
   // Función para descargar archivo .ics
   const handleDownloadICS = (url: string) => {
     const a = document.createElement('a');
@@ -143,11 +143,6 @@ const Dashboard: React.FC = () => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  };
-
-  // Función para abrir correo
-  const handleOpenEmail = () => {
-    window.open('https://webmail.unavarra.es/round/', '_blank');
   };
 
   // Cargar estado del calendario al inicializar
@@ -350,7 +345,8 @@ const Dashboard: React.FC = () => {
         
         {/* Panel Izquierdo - Herramientas y Info Académica */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Accesos Rápidos Verticales */}          <div className="bg-white rounded-lg shadow-sm p-4">
+          {/* Accesos Rápidos Verticales */}
+          <div className="bg-white rounded-lg shadow-sm p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">🚀 Herramientas</h3>
             <div className="space-y-3">
               <button
@@ -361,17 +357,6 @@ const Dashboard: React.FC = () => {
                 <div>
                   <div className="text-sm font-medium text-blue-800">Aplicaciones</div>
                   <div className="text-xs text-blue-600">Herramientas y recursos</div>
-                </div>
-              </button>
-
-              <button
-                onClick={handleOpenEmail}
-                className="w-full flex items-center p-3 bg-gradient-to-r from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 rounded-lg transition-all hover:scale-105 text-left"
-              >
-                <EnvelopeIcon className="h-6 w-6 text-red-600 mr-3" />
-                <div>
-                  <div className="text-sm font-medium text-red-800">Correo</div>
-                  <div className="text-xs text-red-600">Email institucional</div>
                 </div>
               </button>
               
